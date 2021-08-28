@@ -1,0 +1,11 @@
+.idea
+
+# It helps to copy-paste cache from the BSC5P-JSON repo, but we don't want to
+# commit any of it.
+original_bsc5p
+simbad.u-strasbg.fr_cache
+bsc5p.json
+bsc5p_extra.json
+bsc5p_extra_min.json
+bsc5p_min.json
+check_broken_cache.sh
