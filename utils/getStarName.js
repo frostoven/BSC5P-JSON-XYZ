@@ -24,6 +24,11 @@ function getStarName(star) {
     // Exclude prefix on this one. It's part of the name if specified.
     name = star.bayerAndOrFlamsteed;
   }
+  else if (star.customStarName) {
+    // customName is used by the 'addCustomStars' amendment script and is not
+    // included in the original BSC5P data.
+    name = star.customStarName;
+  }
 
   if (!name) {
     return null;
