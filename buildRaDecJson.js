@@ -17,6 +17,7 @@ const fs = require('fs');
 const BSC5P_JSON = require('./bsc5p_min.json');
 const SIMBAD_CACHE_DIR = './simbad.u-strasbg.fr_cache';
 const getStarName = require('./utils/getStarName');
+const extractSpectralInformation = require('./utils/extractSpectralInfo');
 
 const { appendData, changeIfNeeded, loopThroughData } = require('./amendmentFactory');
 const { raToRadians, decToRadians, convertCoordsToRadians } = require('./utils/mathUtils');
@@ -180,6 +181,7 @@ function extractAsciiNamesParSpec(starName, dump) {
     getValue(line, targetPairs, [
       'Coordinates(ICRS,ep=J2000,eq=2000):',
       'Parallax:', // divide by 1000.
+      'Spectral type:',
     ]);
   }
 
@@ -194,10 +196,16 @@ function extractAsciiNamesParSpec(starName, dump) {
     parallax /= 1000;
   }
 
+  let spectralType = targetPairs['Spectral type:'];
+  if (spectralType) {
+    spectralType = spectralType.split(' ')[0];
+  }
+
   return {
     rightAscension,
     declination,
     parallax,
+    spectralType,
     namesAlt: identifiers,
   };
 }
@@ -237,7 +245,7 @@ function processEntry(entry, isCustomEntry) {
     declination = data.declination;
     parallax = data.parallax;
     visualMagnitude = Number(entry.visualMagnitude);
-    spectralType = entry.spectralType;
+    spectralType = data.spectralType;
     namesAlt = data.namesAlt;
   }
 
