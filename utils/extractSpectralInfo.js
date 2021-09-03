@@ -1,5 +1,5 @@
 // All different types of stars.
-const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M' ];
+const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M', 'S' ];
 
 // 0-9 (0=hottest, 9=coldest). You may have fractions (eg.
 // Mu Normae is O9.7 [that's an O, not a 0]).
@@ -163,6 +163,18 @@ function extractSpectralInformation(spec) {
     }
 
     // String processing starts here.
+
+    // Special provisions for S type stars here. If S-type, don't even bother
+    // with processing beyond star type (S-types used by this script don't need
+    // more). Simply split by '/' and call it a day.
+    if (spectralClass === 'S') {
+      const xy = spec.split('/');
+      return {
+        spectralClass: 'S',
+        x: xy[0],
+        y: xy[1],
+      };
+    }
 
     // A plus can have multiple meanings: next star, or scale. If the next
     // character is a star, then terminate and start anew. Else, append to last
