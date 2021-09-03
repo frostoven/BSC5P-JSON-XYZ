@@ -1,5 +1,11 @@
+// Assumes that star spectra may be missing the '+' required to separate into
+// multi-stars. Note that this option is dangerous because it will return false
+// positives for spectra containing lines such as 'kB9'. Might be useful for
+// entries like kA3hA5mA5V (if I understand them correctly).
+const attemptGuessingMissingPlus = false;
+
 // All different types of stars.
-const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M', 'S' ];
+const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M', 'S', 'W' ];
 
 // 0-9 (0=hottest, 9=coldest). You may have fractions (eg.
 // Mu Normae is O9.7 [that's an O, not a 0]).
@@ -28,8 +34,8 @@ const spectralSubclassMax = 9;
 // Remember that Ia+ above? Well turns out '+' can also mean binary (or triple,
 // etc) star. Unless of course it's an Ia+ in which case the plus just means 0.
 // Unless *unless* we're talking about an Ia+Ia in which case we actually *do*
-// mean Ia (not Ia+) and a binary Ia partner. Please help. (Yes, this script
-// successfully parses all that mess [unless I missed some edge cases].)
+// mean Ia (not Ia+) and a binary Ia partner. Except sometimes the star simply
+// doesn't have a '+' at all and just blindly continues. Please help.
 const possibleLuminosities = [
   '0', 'I', 'Ia+', 'Ia', 'Iab', 'c', 'Ib', 'II', 'g', 'III', 'IIIa',
   'IIIb', 'sg', 'IV', 'd', 'V', 'sd', 'VI', 'D', 'VII',
@@ -176,6 +182,22 @@ function extractSpectralInformation(spec) {
       };
     }
 
+    // Special provisions for Wolf–Rayet stars here. Their naming is a tad
+    // different, so some loop abuse happens here.
+    if (spectralClass === 'W' && (char === 'N' || char === 'C')) {
+      const nextNextChar = spec[i + 2];
+      spectralClass += char;
+      if (nextChar >= 0 && nextChar <= 9) {
+        spectralClass += nextChar;
+        i++;
+        if (nextNextChar === 'h') {
+          spectralClass += nextNextChar;
+          i++;
+        }
+      }
+      continue;
+    }
+
     // A plus can have multiple meanings: next star, or scale. If the next
     // character is a star, then terminate and start anew. Else, append to last
     // built item as they likely mean '⁺' instead of '+'.
@@ -298,10 +320,26 @@ function extractSpectralInformation(spec) {
          }
       }
       else if (!isValid.luminosityClass(buffer) && !isValid.luminosityClass(buffer + nextChar)) {
+        if (attemptGuessingMissingPlus) {
+          if (isValid.spectralClass(nextChar) && nextChar !== '-' && nextChar !== '/') {
+            // We're overflowing. This can happen with weirdly named spectra
+            // missing plus delimiters, example kA3hA5mA5V.
+            captureThisStar();
+            continue;
+          }
+        }
+
         // This logic is flaky and will fail if we get ever get scenarious like
         // a class being called 'Z', another called 'ZZZ', but nothing called 'ZZ'.
         peculiarities += buffer;
         buffer = '';
+      }
+    }
+    else if (attemptGuessingMissingPlus) {
+      if (isValid.spectralClass(nextChar) && nextChar !== '-' && nextChar !== '/') {
+        // We're overflowing. This can happen with weirdly named spectra
+        // missing plus delimiters, example kA3hA5mA5V.
+        captureThisStar();
       }
     }
   }
