@@ -2,6 +2,7 @@
 
 let customId = 0;
 
+// See CONTRIBUTING.md for information on how to adjust this.
 // Note: always add custom starts AT THE END of the starData array, otherwise
 // it'll change the identification of existing stars.
 const starData = [

@@ -1,5 +1,6 @@
 // Amendments for default star parallax.
 
+// See CONTRIBUTING.md for information on how to adjust this.
 const parallaxOverrides = {
   /* Example:
   ******************************************

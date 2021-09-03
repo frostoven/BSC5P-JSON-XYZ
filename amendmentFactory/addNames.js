@@ -1,5 +1,6 @@
 // Adds an additional name to list of names.
 
+// See CONTRIBUTING.md for information on how to adjust this.
 const extraNames = {
   /* Example:
   ******************************************

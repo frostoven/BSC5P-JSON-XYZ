@@ -1,5 +1,6 @@
 // Amendments for default star names.
 
+// See CONTRIBUTING.md for information on how to adjust this.
 const nameOverrides = {
   /* Example:
   ******************************************
