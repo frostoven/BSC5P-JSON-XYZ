@@ -51,4 +51,4 @@ function changeDefaultName(lineId, starName, alternativeNames=[]) {
   return starName;
 }
 
-module.exports = changeDefaultName;
+export default changeDefaultName;

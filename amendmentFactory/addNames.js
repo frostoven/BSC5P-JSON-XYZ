@@ -42,4 +42,4 @@ function addNames(lineId, namesArray) {
   return namesArray;
 }
 
-module.exports = addNames;
+export default addNames;

@@ -3,11 +3,11 @@
 // Specifies changes that should be made to star data when converting Simbad
 // catalogs to game-friendly JSON.
 
-const changeDefaultName = require('./changeDefaultName');
-const changeParallax = require('./changeParallax');
-const changeRaDec = require('./changeRaDec');
-const addNames = require('./addNames');
-const loopThroughCustomStars = require('./loopThroughCustomStars');
+import changeDefaultName from './changeDefaultName';
+import changeParallax from './changeParallax';
+import changeRaDec from './changeRaDec';
+import addNames from './addNames';
+import loopThroughCustomStars from './loopThroughCustomStars';
 
 const changeIfNeeded = {
   defaultName: changeDefaultName,
@@ -23,7 +23,7 @@ const loopThroughData = {
   customStars: loopThroughCustomStars,
 };
 
-module.exports = {
+export {
   changeIfNeeded,
   appendData,
   loopThroughData,

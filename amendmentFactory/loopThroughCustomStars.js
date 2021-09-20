@@ -35,4 +35,4 @@ function loopThroughCustomStars(callback=()=>{}) {
   }
 }
 
-module.exports = loopThroughCustomStars;
+export default loopThroughCustomStars;

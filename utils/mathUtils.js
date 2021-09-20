@@ -35,10 +35,9 @@ function convertCoordsToRadians({ rightAscension, declination }) {
 
 // I would really like to get the following working in future. I know it's
 // *nearly* correct, but something in is wrong and produces bad results.
-// So. Many. Coordinate systems.
+// So. Many. Coordinate. Systems.
 // function raDecToAzAlt(ra, decl) {
 //   const hourAngle = ((lst - ra) + 360) % 360;
-//
 //
 //   const x = Math.cos(hourAngle * (Math.PI / 180)) * Math.cos(decl * (Math.PI / 180));
 //   const y = Math.sin(hourAngle * (Math.PI / 180)) * Math.cos(decl * (Math.PI / 180));
@@ -56,11 +55,10 @@ function convertCoordsToRadians({ rightAscension, declination }) {
 //   return { az, alt };
 // }
 
-module.exports = {
+export {
   convertCoordsToRadians,
   raToDecimal,
   degToDecimal,
   raToRadians,
   decToRadians,
-  // raDecToAzAlt,
-};
+}

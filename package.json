@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/aggregate1166877/Star-catalogs-for-video-games/issues"
   },
-  "homepage": "https://github.com/aggregate1166877/Star-catalogs-for-video-games#readme"
+  "homepage": "https://github.com/aggregate1166877/Star-catalogs-for-video-games#readme",
+  "type": "module"
 }

@@ -9,20 +9,17 @@
 // Expects [] from [] to be present, which can be downloaded here:
 // https://github.com/aggregate1166877/BSC5P-JSON
 //
-// Requires Node.js > 10.
+// Requires Node.js > 14.
 // Usage:
 //  node buildRaDecJson.js
 
-const fs = require('fs');
-const BSC5P_JSON = require('./bsc5p_min.json');
+import fs from 'fs';
+import BSC5P_JSON from './bsc5p_min.json';
+import getStarName from './utils/getStarName.js';
+import { appendData, changeIfNeeded, loopThroughData } from './amendmentFactory';
+import { raToRadians, decToRadians, convertCoordsToRadians } from './utils/mathUtils';
+
 const SIMBAD_CACHE_DIR = './simbad.u-strasbg.fr_cache';
-const getStarName = require('./utils/getStarName');
-const extractSpectralInformation = require('./utils/extractSpectralInfo');
-
-const { appendData, changeIfNeeded, loopThroughData } = require('./amendmentFactory');
-const { raToRadians, decToRadians, convertCoordsToRadians } = require('./utils/mathUtils');
-
-// const RESULT_PRETTY_FILE = 'bsc5p_3d.json';
 const RESULT_PRETTY_FILE = 'bsc5p_radec.json';
 const RESULT_MIN_FILE = 'bsc5p_radec_min.json';
 const RESULT_NAMES_PRETTY_FILE = 'bsc5p_names.json';

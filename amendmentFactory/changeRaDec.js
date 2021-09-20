@@ -24,4 +24,4 @@ function changeRaDec(lineId, { rightAscension, declination }) {
   return { rightAscension, declination };
 }
 
-module.exports = changeRaDec;
+export default changeRaDec;

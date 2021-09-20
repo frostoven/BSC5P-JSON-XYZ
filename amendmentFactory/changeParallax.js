@@ -32,4 +32,4 @@ function changeParallax(lineId, parallax) {
   return parallax;
 }
 
-module.exports = changeParallax;
+export default changeParallax;
