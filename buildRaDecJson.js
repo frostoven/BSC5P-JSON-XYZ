@@ -16,6 +16,9 @@
 import fs from 'fs';
 import BSC5P_JSON from './bsc5p_min.json';
 import getStarName from './utils/getStarName.js';
+import extractSpectralInformation from './utils/extractSpectralInfo.js';
+import { getStarColors, removeRedundantColorInfo, key as paletteKey } from './utils/colorProcessing';
+import { calculateAbsoluteMagnitude } from './utils/mathUtils.js'
 import { appendData, changeIfNeeded, loopThroughData } from './amendmentFactory';
 import { raToRadians, decToRadians, convertCoordsToRadians } from './utils/mathUtils';
 
@@ -214,6 +217,10 @@ function processEntry(entry, isCustomEntry) {
     console.error('xx Error: Celestial body has missing name:', entry);
     return;
   }
+  if (starName.startsWith('SN')) {
+    console.log(`Ignoring supernova '${starName}' because these do not have processable data.`);
+    return;
+  }
 
   const fileName = `./${SIMBAD_CACHE_DIR}/${encodeURI(starName)}.txt`;
 
@@ -246,6 +253,10 @@ function processEntry(entry, isCustomEntry) {
     namesAlt = data.namesAlt;
   }
 
+  const absoluteMagnitude = calculateAbsoluteMagnitude(
+    visualMagnitude, 1 / parallax
+  );
+
   if (rightAscension < 0) {
     // Hasn't happened thus far, but hey it's an easy check.
     console.error('xx Error: Found star with negative right ascension. This is invalid.');
@@ -263,15 +274,52 @@ function processEntry(entry, isCustomEntry) {
     namesAlt.push(...entry.customAdditionalNames);
   }
 
-  gameJson.push({
+  // Process spectral data for easier parsing client-side.
+  const specExtra = extractSpectralInformation(spectralType);
+  const palette = removeRedundantColorInfo(getStarColors(specExtra, starName));
+  // If we have a ranged glow defined, that means our star colour is uncertain,
+  // and our primary glow should be that. Otherwise, just use normal glow. Note
+  // that this is difference to averagedMulti, which involves multi-star
+  // systems and is not included in this decisions because the source data
+  // never seems to include relative brightnesses for such siblings. This means
+  // we can't know if colour distribution is, for example, 80% blue and 20%
+  // red, or 80% red and 20% blue. This multi-star problem generally solves
+  // itself anyway when we have observations that specifically separate them
+  // into individual stars.
+  let primaryGlow;
+  if (palette[paletteKey.rangedGlow]) {
+    primaryGlow = palette[paletteKey.rangedGlow];
+  }
+  else {
+    primaryGlow = palette[paletteKey.glow];
+  }
+  // Prepare for embedding into colorInfo.
+  palette.k = primaryGlow;
+
+  const colorInfo = {
     i: lineId,
     n: changeIfNeeded.defaultName(lineId, starName, namesAlt),
     r: rightAscension,
     d: declination,
     p: changeIfNeeded.parallax(lineId, parallax),
+    a: absoluteMagnitude,
     b: visualMagnitude,
     s: spectralType,
-  });
+    e: specExtra === null ? {} : {
+      // Omitting these as they're likely not useful.
+      // C: specExtra.spectralClass, // C: class
+      // S: specExtra.spectralSubclass, // S: subclass
+      // L: specExtra.luminosityClass, // L: luminosity
+      X: specExtra.x, // S-type x info, if applicable
+      Y: specExtra.y, // S-type y info, if applicable
+      M: specExtra.siblings, // M: multi-star info
+      O: specExtra.of, // [or] range info
+      T: specExtra.to, // [to] range info
+    },
+    ...palette,
+  };
+
+  gameJson.push(colorInfo);
 
   extraNamesJson.push({
     i: lineId,

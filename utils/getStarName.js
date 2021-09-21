@@ -50,4 +50,4 @@ function getStarName(star) {
   return name;
 }
 
-module.exports = getStarName;
+export default getStarName;
