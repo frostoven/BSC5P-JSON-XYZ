@@ -5,7 +5,7 @@
 const attemptGuessingMissingPlus = false;
 
 // All different types of stars.
-const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M', 'S', 'W' ];
+const spectralClasses = [ 'O', 'B', 'A', 'F', 'G', 'K', 'M', 'D', 'S', 'W' ];
 
 // 0-9 (0=hottest, 9=coldest). You may have fractions (eg.
 // Mu Normae is O9.7 [that's an O, not a 0]).
@@ -67,9 +67,26 @@ isValid.luminosityClass = function(char) {
 /**
  * Parses spectral information and returns easy to look up star information.
  * @param {string} spec
+ * @returns Returns spectral info with the following structure:
+ *  <br>
+ *  * {string} spectralInfo.spectralClass - O B A F G K M D S W, etc.
+ *  * {string} spectralInfo.spectralSubclass - 0-9 (usually).
+ *  * {string} spectralInfo.luminosityClass - Luminosity expressed as romain numerals.
+ *  * {object|null} spectralInfo.to - Possible classification is in a range.
+ *  * {object|null} spectralInfo.or - Star might be this classification instead.
+ *  * {Array} spectralInfo.siblings - Each sibling follows the same structure as this root structure.
+ *  * {string} spectralInfo.skipped - Any characters ignored by the parser (includes peculiarities and element info).
+ *  <br>
+ *  Additionally, S-type stars might have the following structure instead:
+ *  * {string} x
+ *  * {string} y
  */
 function extractSpectralInformation(spec) {
-  // O, B, A, F, G, K, M.
+  if (!spec) {
+    return null;
+  }
+
+  // O, B, A, F, G, K, M, etc.
   let spectralClass = '';
 
   let spectralSubclass = '';
@@ -87,9 +104,9 @@ function extractSpectralInformation(spec) {
   let discoveredClassifications = []; // for binaries, triples, etc.
   let buffer = '';
   // Used for ranges (eg. A1-F1).
-  let to = [];
+  let to = null;
   // Used for either/or cases (eg. A1/F1).
-  let or = [];
+  let or = null;
   // If this is '-' or '/' (used for spectral ranges), then 'to' or 'from' will
   // be used, respectively.
   let rangeType = '';
@@ -102,7 +119,7 @@ function extractSpectralInformation(spec) {
    * Saves star info processed thus as its own entity. This is useful in cases
    * where we have more than one star defined in spectral info.
    */
-  function captureThisStar(target, rangeType='-') {
+  function captureThisStar(target, rangeType = '-') {
     if (!target) target = discoveredClassifications;
     // Record current info, then reset everything and move onto next star.
     const star = {
@@ -112,11 +129,11 @@ function extractSpectralInformation(spec) {
       to,
       or,
     };
-    if (!spectralClass) delete star.spectralClass;
-    if (!spectralSubclass) delete star.spectralSubclass;
-    if (!luminosityClass) delete star.luminosityClass;
-    if (!to.length) delete star.to;
-    if (!or.length) delete star.or;
+    // if (!spectralClass) delete star.spectralClass;
+    // if (!spectralSubclass) delete star.spectralSubclass;
+    // if (!luminosityClass) delete star.luminosityClass;
+    // if (!to.length) delete star.to;
+    // if (!or.length) delete star.or;
     target.push(star);
 
     // Reset.
@@ -132,8 +149,8 @@ function extractSpectralInformation(spec) {
 
     buffer = '';
     rangeType = '';
-    to = [];
-    or = [];
+    to = null;
+    or = null;
 
     if (foundStarRange) {
       foundStarRange = false;
@@ -170,7 +187,7 @@ function extractSpectralInformation(spec) {
 
     // String processing starts here.
 
-    // Special provisions for S type stars here. If S-type, don't even bother
+    // Special provisions for S-type stars here. If S-type, don't even bother
     // with processing beyond star type (S-types used by this script don't need
     // more). Simply split by '/' and call it a day.
     if (spectralClass === 'S') {
@@ -222,6 +239,21 @@ function extractSpectralInformation(spec) {
         }
       }
     }
+
+    // Special provisions for degenerate stars here. Degenerates are white
+    // dwarfs that use their own classification.
+    if (spectralClass === 'D') {
+      spectralClass += char;
+      switch (nextChar) {
+        case 'B':
+        case 'O':
+        case 'Z':
+          spectralClass += nextChar;
+          i++;
+      }
+      continue;
+    }
+
     //
     // Sort characters into appropriate variables.
     //
@@ -317,7 +349,7 @@ function extractSpectralInformation(spec) {
           foundLuminosity = true;
           luminosityClass += buffer;
           buffer = '';
-         }
+        }
       }
       else if (!isValid.luminosityClass(buffer) && !isValid.luminosityClass(buffer + nextChar)) {
         if (attemptGuessingMissingPlus) {
@@ -347,14 +379,14 @@ function extractSpectralInformation(spec) {
   captureThisStar();
 
   const primary = discoveredClassifications.shift();
-  if (discoveredClassifications.length > 0) {
-    primary.siblings = discoveredClassifications;
-  }
-  if (peculiarities) {
-    primary.skipped = peculiarities;
-  }
+  // if (discoveredClassifications.length > 0) {
+  primary.siblings = discoveredClassifications;
+  // }
+  // if (peculiarities) {
+  primary.skipped = peculiarities;
+  // }
 
   return primary;
 }
 
-module.exports = extractSpectralInformation;
+export default extractSpectralInformation;
