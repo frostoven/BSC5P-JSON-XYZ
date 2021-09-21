@@ -1,3 +1,13 @@
+// Linear interpolation.
+function lerp(a, b, t) {
+  return (1 - t) * a + t * b;
+}
+
+// Formula that converts brightness and distance into absolute magnitude.
+function calculateAbsoluteMagnitude(apparentBrightness, distance) {
+  return apparentBrightness - 5 * Math.log10(distance / 10);
+}
+
 // Converts degrees to radians.
 function degreesToRadians(degrees) {
   return degrees * (Math.PI / 180);
@@ -56,6 +66,8 @@ function convertCoordsToRadians({ rightAscension, declination }) {
 // }
 
 export {
+  lerp,
+  calculateAbsoluteMagnitude,
   convertCoordsToRadians,
   raToDecimal,
   degToDecimal,
