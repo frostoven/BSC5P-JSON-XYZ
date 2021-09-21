@@ -16,5 +16,10 @@
     "url": "https://github.com/aggregate1166877/Star-catalogs-for-video-games/issues"
   },
   "homepage": "https://github.com/aggregate1166877/Star-catalogs-for-video-games#readme",
+  "dependencies": {
+    "d3-color": "3.0.1",
+    "d3-hsv": "0.1.0",
+    "d3-interpolate": "3.0.1"
+  },
   "type": "module"
 }

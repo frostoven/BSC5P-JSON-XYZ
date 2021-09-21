@@ -9,3 +9,6 @@ bsc5p_extra.json
 bsc5p_extra_min.json
 bsc5p_min.json
 check_broken_cache.sh
+
+# Node cache
+node_modules
