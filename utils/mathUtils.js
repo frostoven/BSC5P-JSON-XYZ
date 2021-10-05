@@ -95,6 +95,33 @@ function convertCoordsToRadians({ rightAscension, declination }) {
   //
 }
 
+/**
+ * Returns an approximate RGB vec3 (normalised) for the specified kelvin
+ * temperature. Note that the specified value is rounded before looked up.
+ * Allowed range is 50k to 100000k, anything outside that range will be clamped
+ * to that range. Note that, due to the values being normalised, intensity is
+ * discarded.
+ * @param {number} kelvin
+ */
+function kelvinToRGB(kelvin) {
+  // Thanks to these amazing links, we can approximate blackbody colours from
+  // temperature:
+  // http://www.fourmilab.ch/documents/specrend/
+  // https://www.fourmilab.ch/documents/specrend/specrend.c
+  if (kelvin < 50) {
+    kelvin = 50;
+  }
+  if (kelvin > 100000) {
+    kelvin = 100000;
+  }
+  const blackbody = BLACKBODY[Math.round(kelvin)];
+  delete blackbody.x;
+  delete blackbody.y;
+  delete blackbody.z;
+  return blackbody;
+}
+
+
 // I would really like to get the following working in future. I know it's
 // *nearly* correct, but something in is wrong and produces bad results.
 // So. Many. Coordinate. Systems.
@@ -128,4 +155,5 @@ export {
   degToDecimal,
   raToRadians,
   decToRadians,
+  kelvinToRGB,
 }
