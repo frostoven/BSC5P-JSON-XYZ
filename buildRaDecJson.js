@@ -18,7 +18,10 @@ import BSC5P_JSON from './bsc5p_min.json';
 import getStarName from './utils/getStarName.js';
 import extractSpectralInformation from './utils/extractSpectralInfo.js';
 import { getStarColors, removeRedundantColorInfo, key as paletteKey } from './utils/colorProcessing';
-import { calculateAbsoluteMagnitude } from './utils/mathUtils.js'
+import {
+  calculateAbsoluteMagnitude,
+  calculateLuminosityLSub0,
+} from './utils/mathUtils.js'
 import { appendData, changeIfNeeded, loopThroughData } from './amendmentFactory';
 import { raToRadians, decToRadians, convertCoordsToRadians } from './utils/mathUtils';
 
@@ -192,7 +195,10 @@ function extractAsciiNamesParSpec(starName, dump) {
   if (parallax) {
     // Grab the first value.
     parallax = parallax.split(' ')[0];
-    // Divide it by 1000.
+    if (parallax === '~' || !parallax) {
+      console.error('xx>',starName, 'does not have parallax info');
+    }
+    // Simbad provides parallax as MAS. Divide it by 1000.
     parallax /= 1000;
   }
 
@@ -253,9 +259,13 @@ function processEntry(entry, isCustomEntry) {
     namesAlt = data.namesAlt;
   }
 
+  parallax = changeIfNeeded.parallax(lineId, parallax);
+
   const absoluteMagnitude = calculateAbsoluteMagnitude(
-    visualMagnitude, 1 / parallax
+    visualMagnitude, 1 / parallax,
   );
+
+  const luminositySub0 = calculateLuminosityLSub0(absoluteMagnitude);
 
   if (rightAscension < 0) {
     // Hasn't happened thus far, but hey it's an easy check.
@@ -293,19 +303,28 @@ function processEntry(entry, isCustomEntry) {
   else {
     primaryGlow = palette[paletteKey.glow];
   }
+
   // Prepare for embedding into colorInfo.
   palette.k = primaryGlow;
+
+  // Blackbody temperature.
+  palette.K = palette[paletteKey.blackbodyColor];
+
+  // TODO: rename .L to .N (naive luminosity)
 
   const colorInfo = {
     i: lineId,
     n: changeIfNeeded.defaultName(lineId, starName, namesAlt),
     r: rightAscension,
     d: declination,
-    p: changeIfNeeded.parallax(lineId, parallax),
+    p: parallax,
     a: absoluteMagnitude,
+    L: luminositySub0,
     b: visualMagnitude,
     s: spectralType,
     e: specExtra === null ? {} : {
+      // TODO: clean this up. We don't want M:[] and T:null in every damn block.
+      //  Especially investigate remove unnecessary data like spectral types from M (search for spectralClass in bsc5p_radec.json).
       // Omitting these as they're likely not useful.
       // C: specExtra.spectralClass, // C: class
       // S: specExtra.spectralSubclass, // S: subclass

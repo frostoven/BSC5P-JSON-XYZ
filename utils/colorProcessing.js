@@ -1,9 +1,11 @@
 import { hsl } from 'd3-color';
 import { hsv } from 'd3-hsv';
 import { piecewise, interpolateHsl, interpolateRgb } from 'd3-interpolate';
+import { estimateTemperatureInKelvin } from './hrDiagram';
+import { kelvinToRGB } from './mathUtils';
 
 const colorSteps = 150;
-const colors = [ 'blue', 'white', 'yellow', 'orange', 'red', 'purple' ];
+const glowColors = [ 'blue', 'white', 'yellow', 'orange', 'red', 'purple' ];
 
 // Used to shorten keys in JSON while still using human-readable names in code.
 const key = {
@@ -16,6 +18,7 @@ const key = {
   // here.
   averagedMulti: 'h',
   multiStar: 'm',
+  blackbodyColor: 'K',
 };
 
 let it = 0;
@@ -30,13 +33,21 @@ const starClass = {
   O: it++,
   W: it, // We treat this like a synonym of O because they're similar.
   B: it++,
+  // ---------------------------------------------------------------
+  // White dwarfs range anywhere from 8k-40k, so can be like A,B,O. We'll
+  // approximate to B0 (8.7k).
+  D: it,
+  DA: it,
+  DB: it,
+  DO: it,
+  DZ: it,
+  // ---------------------------------------------------------------
   A: it++,
   F: it++,
   G: it++,
   K: it++,
   M: it++,
   S: it, // Similar to M.
-  D: it++,
   L: it++,
   T: it++,
   Y: it++,
@@ -62,6 +73,7 @@ function averageSpecClass(string, starName) {
   let parts = getSplitRange(string);
   let sum = 0;
   let divisor = 0;
+  // let errors = 0;
 
   // Loop through all numbers and average out discovered values.
   const numbers = [];
@@ -136,7 +148,9 @@ function getClassPerc(specValue) {
 
 /**
  * Takes the star class, and returns a percentage of where it falls within the
- * colour spectrum.
+ * colour spectrum. Note that the range is calculated based on the amount of
+ * colour steps; as in the, the percentage returned is a percentage of the
+ * colour step value.
  * @param {number} subclass
  * @param {number} [limit] - The limit (9) can be overridden as it's not the
  *   same for all types. For example, Y dwarfs are classified 0-2 and S-types
@@ -152,14 +166,14 @@ function getSubclassPerc(subclass, limit=9) {
 }
 
 const genColor = (percentage) => {
-  const colorFn = piecewise(interpolateHsl, colors);
+  const colorFn = piecewise(interpolateHsl, glowColors);
   const transformedHsl = hsl(colorFn(percentage)).brighter(1.5);
   // hsl.s -= 0.5;
   return transformedHsl.formatHex();
 }
 
 const genGlow = (percentage) => {
-  const colorFn = piecewise(interpolateHsl, colors);
+  const colorFn = piecewise(interpolateHsl, glowColors);
   const transformedHsl = hsl(colorFn(percentage));
   return transformedHsl.formatHex();
 }
@@ -194,13 +208,28 @@ function getAveragedColor(colorOne, colorTwo) {
 function getStarColor(specClass, specSubclass, starName) {
   // console.log('getStarColor:', averageSpecClass(specClass), averageNumberRange(specSubclass));
   // console.log('spec info:', { specClass }, { specSubclass });
-  let stepValue = getClassPerc(averageSpecClass(specClass, starName));
-  stepValue += getSubclassPerc(averageNumberRange(specSubclass, starName));
+
+  const avgSpecClass = averageSpecClass(specClass, starName);
+  const avgNumRange = averageNumberRange(specSubclass, starName);
+  const classPerc = getClassPerc(avgSpecClass);
+  const subClassPerc = getSubclassPerc(avgNumRange);
+
+  let stepValue = classPerc + subClassPerc;
   const percentage = stepValue / colorSteps;
+
+  const temperature = estimateTemperatureInKelvin(percentage);
+  // console.log(`=> [${starName}]`, { specClass, classPerc }, '+', { specSubclass, subClassPerc }, {temperature} ,'\n');
+  const blackbodyColor = kelvinToRGB(temperature);
+  // TODO: implement mechanism to correctly handle Wolf-Rayet, S-type, and other special
+  //  kinds of stars.
+
+  // TODO: check what kind of temperature we get for D classes. We're expecting
+  //  8k-40k, which most lower rather than higher. Note: lowest known is only
+  //  4k; this is not an incorrect classification.
 
   const color = genColor(percentage);
   const glow = genGlow(percentage);
-  return { color, glow };
+  return { color, glow, blackbodyColor };
 }
 
 /**
@@ -234,6 +263,7 @@ function getStarColors(spectralInfo, starName, isNested=false) {
     const star = getStarColor(spectralClass, spectralSubclass, starName);
     palette[key.color] = star.color;
     palette[key.glow] = star.glow;
+    palette[key.blackbodyColor] = star.blackbodyColor;
   }
 
   // Calculate range colour, and average out with root colour if found.
