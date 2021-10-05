@@ -1,4 +1,4 @@
-### Warning: this star catalog still needs to undergo review and testing to ensure everything is working the way it's supposed to. Avoid using it for any real applications for now.
+### Warning: this star catalog still needs to undergo review and testing to ensure everything is working the way it's supposed to. Its structure is also still a work in progress and its output continually evolving. Avoid using it for any real applications for now.
 
 This catalog targets video game developers and visualisation artists that need
 an easy-to-use, real star catalogs at their disposal. This catalog contains all
