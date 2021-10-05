@@ -13,12 +13,12 @@ const parallaxOverrides = {
   */
   1948: {
     // We do not have data for this by default.
-    changeTo: 0.0025,
+    changeTo: 0.00443,
     fallback: [ '* zet Ori A', 'GCRV 3517', 'ADS 4263 A' ],
   },
   1949: {
     // We do not have data for this by default.
-    changeTo: 0.0025,
+    changeTo: 0.00443,
     fallback: [ '* 50 Ori B', 'GCRV 3518', 'ADS 4263 B' ],
   },
 };
