@@ -1,4 +1,6 @@
 // Adds a star not current in the catalogs.
+// NOTE: do not use this to modify existing stars - only use this to add stars
+// not already in catalogs used here. Use amendAsNeeded for existing stars.
 
 let customId = 0;
 

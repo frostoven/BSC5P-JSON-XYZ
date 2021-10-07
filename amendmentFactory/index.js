@@ -3,28 +3,17 @@
 // Specifies changes that should be made to star data when converting Simbad
 // catalogs to game-friendly JSON.
 
-import changeDefaultName from './changeDefaultName';
-import changeParallax from './changeParallax';
-import changeRaDec from './changeRaDec';
-import addNames from './addNames';
 import loopThroughCustomStars from './loopThroughCustomStars';
+import amendAsNeeded from './amendAsNeeded';
 
-const changeIfNeeded = {
-  defaultName: changeDefaultName,
-  parallax: changeParallax,
-  raDec: changeRaDec,
-};
-
-const appendData = {
-  addNames,
-};
-
+// Adds stars not in existing catalogs.
+// NOTE: do not use this to modify existing stars - only use this to add stars
+// not already in catalogs used here. Use amendAsNeeded for existing stars.
 const loopThroughData = {
   customStars: loopThroughCustomStars,
 };
 
 export {
-  changeIfNeeded,
-  appendData,
   loopThroughData,
+  amendAsNeeded,
 };

@@ -22,17 +22,20 @@ import {
   calculateAbsoluteMagnitude,
   calculateLuminosityLSub0,
 } from './utils/mathUtils.js'
-import { appendData, changeIfNeeded, loopThroughData } from './amendmentFactory';
-import { raToRadians, decToRadians, convertCoordsToRadians } from './utils/mathUtils';
+import { loopThroughData, amendAsNeeded } from './amendmentFactory';
+import { raToRadians, decToRadians } from './utils/mathUtils';
 
+const JSON_PADDING = 4;
 const SIMBAD_CACHE_DIR = './simbad.u-strasbg.fr_cache';
 const RESULT_PRETTY_FILE = 'bsc5p_radec.json';
 const RESULT_MIN_FILE = 'bsc5p_radec_min.json';
 const RESULT_NAMES_PRETTY_FILE = 'bsc5p_names.json';
 const RESULT_NAMES_MIN_FILE = 'bsc5p_names_min.json';
+const SPEC_EXTRA_PRETTY_FILE = 'bsc5p_spectral_extra.json';
+const SPEC_EXTRA_MIN_FILE = 'bsc5p_spectral_extra_min.json';
 
-// Contains the processed catalog data.
-let gameJson = [];
+// Contains the processed catalog data with right ascension / declination.
+let raDecJson = [];
 // Contains additional names for each star. Each star tends to contain a lot
 // more bytes worth of names than all other star data combined, so we store
 // extra names separately.
@@ -230,120 +233,103 @@ function processEntry(entry, isCustomEntry) {
 
   const fileName = `./${SIMBAD_CACHE_DIR}/${encodeURI(starName)}.txt`;
 
-  let lineId, rightAscension, declination, parallax, visualMagnitude, spectralType, namesAlt = [];
+  let star = {};
 
-  // TODO: continue from here. Custom not being hit.
   if (isCustomEntry) {
+    star.primaryName = starName;
     const coords = spaceDelimCoordsToRadians(
       `${entry.ra} ${entry.dec}`,
     );
-    lineId = entry.lineNumber;
-    rightAscension = coords.rightAscension;
-    declination = coords.declination;
-    parallax = entry.parallax;
-    visualMagnitude = entry.visualMagnitude;
-    spectralType = entry.spectralType;
-    namesAlt = entry.additionalNames;
+    star.lineId = entry.lineNumber;
+    star.ra = coords.rightAscension;
+    star.dec = coords.declination;
+    star.parallax = entry.parallax;
+    star.visualMagnitude = entry.visualMagnitude;
+    star.spectralType = entry.spectralType;
+    star.namesAlt = entry.additionalNames;
   }
   else {
     // Get data from cached page.
     const simPage = fs.readFileSync(fileName, 'utf8');
     const data = extractAsciiNamesParSpec(starName, simPage);
 
-    lineId = Number(entry.lineNumber);
-    rightAscension = data.rightAscension;
-    declination = data.declination;
-    parallax = data.parallax;
-    visualMagnitude = Number(entry.visualMagnitude);
-    spectralType = data.spectralType;
-    namesAlt = data.namesAlt;
+    star.primaryName = starName;
+    star.lineId = Number(entry.lineNumber);
+    star.ra = data.rightAscension;
+    star.dec = data.declination;
+    star.parallax = data.parallax;
+    star.visualMagnitude = Number(entry.visualMagnitude);
+    star.spectralType = data.spectralType;
+    star.namesAlt = data.namesAlt;
   }
 
-  parallax = changeIfNeeded.parallax(lineId, parallax);
+  star = amendAsNeeded(star);
 
-  const absoluteMagnitude = calculateAbsoluteMagnitude(
-    visualMagnitude, 1 / parallax,
-  );
+  // If not undefined, then an override was specified in which case we skip calculation.
+  if (typeof star.absoluteMagnitude === 'undefined') {
+    star.absoluteMagnitude = calculateAbsoluteMagnitude(
+      star.visualMagnitude, 1 / star.parallax,
+    );
+  }
 
-  const luminositySub0 = calculateLuminosityLSub0(absoluteMagnitude);
+  // If not undefined, then an override was specified in which case we skip calculation.
+  if (typeof star.naiveLuminosity === 'undefined') {
+    star.naiveLuminosity = calculateLuminosityLSub0(star.absoluteMagnitude);
+  }
 
-  if (rightAscension < 0) {
-    // Hasn't happened thus far, but hey it's an easy check.
-    console.error('xx Error: Found star with negative right ascension. This is invalid.');
+  if (star.ra < 0) {
+    // Hasn't happened thus far, but hey, it's an easy check.
+    console.error('xx> Error: Found star with negative right ascension. This is invalid.');
     return;
   }
 
-  // Check for overrides.
-  const positions = changeIfNeeded.raDec(lineId, { rightAscension, declination });
-  rightAscension = positions.rightAscension;
-  declination = positions.declination;
-
-  if (entry.customAdditionalNames) {
-    // customAdditionalNames is used by the 'addCustomStars' amendment script
-    // and is not included in original BSC5P data.
-    namesAlt.push(...entry.customAdditionalNames);
-  }
-
   // Process spectral data for easier parsing client-side.
-  const specExtra = extractSpectralInformation(spectralType);
-  const palette = removeRedundantColorInfo(getStarColors(specExtra, starName));
-  // If we have a ranged glow defined, that means our star colour is uncertain,
-  // and our primary glow should be that. Otherwise, just use normal glow. Note
-  // that this is difference to averagedMulti, which involves multi-star
-  // systems and is not included in this decisions because the source data
-  // never seems to include relative brightnesses for such siblings. This means
-  // we can't know if colour distribution is, for example, 80% blue and 20%
-  // red, or 80% red and 20% blue. This multi-star problem generally solves
-  // itself anyway when we have observations that specifically separate them
-  // into individual stars.
-  let primaryGlow;
-  if (palette[paletteKey.rangedGlow]) {
-    primaryGlow = palette[paletteKey.rangedGlow];
-  }
-  else {
-    primaryGlow = palette[paletteKey.glow];
+  if (typeof star.specExtra === 'undefined') {
+    star.specExtra = extractSpectralInformation(star.spectralType);
   }
 
-  // Prepare for embedding into colorInfo.
-  palette.k = primaryGlow;
+  let palette;
+  if (typeof star.cartoonColor === 'undefined' || typeof star.blackbodyColor === 'undefined') {
+    palette = removeRedundantColorInfo(getStarColors(star.specExtra, star.primaryName));
+    // If we have a ranged glow defined, that means our star colour is uncertain,
+    // and our primary glow should be that. Otherwise, just use normal glow. Note
+    // that this is difference to averagedMulti, which involves multi-star
+    // systems and is not included in this decisions because the source data
+    // never seems to include relative brightnesses for such siblings. This means
+    // we can't know if colour distribution is, for example, 80% blue and 20%
+    // red, or 80% red and 20% blue. This multi-star problem generally solves
+    // itself anyway when we have observations that specifically separate them
+    // into individual stars.
+  }
 
-  // Blackbody temperature.
-  palette.K = palette[paletteKey.blackbodyColor];
+  if (typeof star.cartoonColor === 'undefined') {
+    star.cartoonColor = palette[paletteKey.glow];
+  }
 
-  // TODO: rename .L to .N (naive luminosity)
+  if (typeof star.blackbodyColor === 'undefined') {
+    star.blackbodyColor = palette[paletteKey.blackbodyColor];
+  }
 
-  const colorInfo = {
-    i: lineId,
-    n: changeIfNeeded.defaultName(lineId, starName, namesAlt),
-    r: rightAscension,
-    d: declination,
-    p: parallax,
-    a: absoluteMagnitude,
-    L: luminositySub0,
-    b: visualMagnitude,
-    s: spectralType,
-    e: specExtra === null ? {} : {
-      // TODO: clean this up. We don't want M:[] and T:null in every damn block.
-      //  Especially investigate remove unnecessary data like spectral types from M (search for spectralClass in bsc5p_radec.json).
-      // Omitting these as they're likely not useful.
-      // C: specExtra.spectralClass, // C: class
-      // S: specExtra.spectralSubclass, // S: subclass
-      // L: specExtra.luminosityClass, // L: luminosity
-      X: specExtra.x, // S-type x info, if applicable
-      Y: specExtra.y, // S-type y info, if applicable
-      M: specExtra.siblings, // M: multi-star info
-      O: specExtra.of, // [or] range info
-      T: specExtra.to, // [to] range info
-    },
-    ...palette,
-  };
-
-  gameJson.push(colorInfo);
+  raDecJson.push({
+    i: star.lineId,
+    n: star.primaryName,
+    r: star.ra,
+    d: star.dec,
+    p: star.parallax,
+    a: star.absoluteMagnitude,
+    L: star.luminosity,
+    N: star.naiveLuminosity,
+    b: star.visualMagnitude,
+    s: star.spectralType,
+    g: star.cartoonColor,
+    K: star.blackbodyColor,
+  });
 
   extraNamesJson.push({
-    i: lineId,
+    i: star.lineId,
     // Adds additional names not originally in the star catalogs, if needed.
-    n: appendData.addNames(lineId, namesAlt),
+    // n: appendData.addNames(star.lineId, star.namesAlt),
+    n: star.namesAlt,
   });
 }
 
@@ -374,14 +360,18 @@ processAllEntries();
 
 console.log(`=> Data compiled; saving files:`);
 
+// TODO: change minification process such that minifying places each entry on
+//  its own line. This allows rapidly reading valid JSON entries without
+//  parsing the entire file (which can range megabytes at a time).
+
 console.log('   ...', RESULT_PRETTY_FILE);
-fs.writeFileSync(RESULT_PRETTY_FILE, JSON.stringify(gameJson, null, 4));
+fs.writeFileSync(RESULT_PRETTY_FILE, JSON.stringify(raDecJson, null, JSON_PADDING));
 
 console.log('   ...', RESULT_MIN_FILE);
-fs.writeFileSync(RESULT_MIN_FILE, JSON.stringify(gameJson));
+fs.writeFileSync(RESULT_MIN_FILE, JSON.stringify(raDecJson));
 
 console.log('   ...', RESULT_NAMES_PRETTY_FILE);
-fs.writeFileSync(RESULT_NAMES_PRETTY_FILE, JSON.stringify(extraNamesJson, null, 4));
+fs.writeFileSync(RESULT_NAMES_PRETTY_FILE, JSON.stringify(extraNamesJson, null, JSON_PADDING));
 
 console.log('   ...', RESULT_NAMES_MIN_FILE);
 fs.writeFileSync(RESULT_NAMES_MIN_FILE, JSON.stringify(extraNamesJson));
