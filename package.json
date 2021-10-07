@@ -20,7 +20,8 @@
     "d3-color": "3.0.1",
     "d3-hsv": "0.1.0",
     "d3-interpolate": "3.0.1",
-    "decimal.js": "10.3.1"
+    "decimal.js": "10.3.1",
+    "three": "0.133.1"
   },
   "type": "module"
 }
