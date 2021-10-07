@@ -24,11 +24,14 @@ import {
 } from './utils/mathUtils.js'
 import { loopThroughData, amendAsNeeded } from './amendmentFactory';
 import { raToRadians, decToRadians } from './utils/mathUtils';
+import project3d from './utils/project3d';
 
 const JSON_PADDING = 4;
 const SIMBAD_CACHE_DIR = './simbad.u-strasbg.fr_cache';
 const RESULT_PRETTY_FILE = 'bsc5p_radec.json';
 const RESULT_MIN_FILE = 'bsc5p_radec_min.json';
+const RESULT_3D_PRETTY_FILE = 'bsc5p_3d.json';
+const RESULT_3D_MIN_FILE = 'bsc5p_3d_min.json';
 const RESULT_NAMES_PRETTY_FILE = 'bsc5p_names.json';
 const RESULT_NAMES_MIN_FILE = 'bsc5p_names_min.json';
 const SPEC_EXTRA_PRETTY_FILE = 'bsc5p_spectral_extra.json';
@@ -36,6 +39,10 @@ const SPEC_EXTRA_MIN_FILE = 'bsc5p_spectral_extra_min.json';
 
 // Contains the processed catalog data with right ascension / declination.
 let raDecJson = [];
+// Contains the processed catalog data with x,y,z coordinates.
+let coordsJson = [];
+// Contains processed spectral information.
+let specExtraJson = [];
 // Contains additional names for each star. Each star tends to contain a lot
 // more bytes worth of names than all other star data combined, so we store
 // extra names separately.
@@ -219,6 +226,26 @@ function extractAsciiNamesParSpec(starName, dump) {
   };
 }
 
+// Shortens keys for sibling info.
+function shortenSiblings(array) {
+  if (!array) {
+    return [];
+  }
+
+  const result = [];
+  for (let i = 0, len = array.length; i < len; i++) {
+    const info = array[i];
+    result.push({
+      C: info.spectralClass,
+      S: info.spectralSubclass,
+      A: info.luminosityClass,
+      to: info.to,
+      or: info.or,
+    });
+  }
+  return result;
+}
+
 function processEntry(entry, isCustomEntry) {
   const starName = getStarName(entry);
   if (!starName) {
@@ -264,6 +291,19 @@ function processEntry(entry, isCustomEntry) {
   }
 
   star = amendAsNeeded(star);
+
+  if (typeof star.x === 'undefined' || star.y === 'undefined' || star.z === 'undefined') {
+    const get3dPosition = project3d({
+      rightAscension: star.ra,
+      declination: star.dec,
+      distance: 1 / star.parallax,
+    });
+
+    const { x, y, z } = get3dPosition;
+    star.x = x;
+    star.y = y;
+    star.z = z;
+  }
 
   // If not undefined, then an override was specified in which case we skip calculation.
   if (typeof star.absoluteMagnitude === 'undefined') {
@@ -315,14 +355,37 @@ function processEntry(entry, isCustomEntry) {
     n: star.primaryName,
     r: star.ra,
     d: star.dec,
-    p: star.parallax,
+    p: 1 / star.parallax,
+    N: star.naiveLuminosity,
+    K: star.blackbodyColor,
+  });
+
+  coordsJson.push({
+    i: star.lineId,
+    n: star.primaryName,
+    x: star.x,
+    y: star.y,
+    z: star.z,
+    p: 1 / star.parallax,
+    N: star.naiveLuminosity,
+    K: star.blackbodyColor,
+  });
+
+  specExtraJson.push({
+    i: star.lineId,
+    b: star.visualMagnitude,
     a: star.absoluteMagnitude,
     L: star.luminosity,
-    N: star.naiveLuminosity,
-    b: star.visualMagnitude,
     s: star.spectralType,
     g: star.cartoonColor,
-    K: star.blackbodyColor,
+    //
+    C: star.specExtra.spectralClass,
+    S: star.specExtra.spectralSubclass,
+    A: star.specExtra.luminosityClass,
+    to: star.specExtra.to,
+    or: star.specExtra.or,
+    e: shortenSiblings(star.specExtra.siblings),
+    q: star.specExtra.skipped,
   });
 
   extraNamesJson.push({
@@ -370,8 +433,20 @@ fs.writeFileSync(RESULT_PRETTY_FILE, JSON.stringify(raDecJson, null, JSON_PADDIN
 console.log('   ...', RESULT_MIN_FILE);
 fs.writeFileSync(RESULT_MIN_FILE, JSON.stringify(raDecJson));
 
+console.log('   ...', RESULT_3D_PRETTY_FILE);
+fs.writeFileSync(RESULT_3D_PRETTY_FILE, JSON.stringify(coordsJson, null, JSON_PADDING));
+
+console.log('   ...', RESULT_3D_MIN_FILE);
+fs.writeFileSync(RESULT_3D_MIN_FILE, JSON.stringify(coordsJson));
+
 console.log('   ...', RESULT_NAMES_PRETTY_FILE);
 fs.writeFileSync(RESULT_NAMES_PRETTY_FILE, JSON.stringify(extraNamesJson, null, JSON_PADDING));
 
 console.log('   ...', RESULT_NAMES_MIN_FILE);
 fs.writeFileSync(RESULT_NAMES_MIN_FILE, JSON.stringify(extraNamesJson));
+
+console.log('   ...', SPEC_EXTRA_PRETTY_FILE);
+fs.writeFileSync(SPEC_EXTRA_PRETTY_FILE, JSON.stringify(specExtraJson, null, JSON_PADDING));
+
+console.log('   ...', SPEC_EXTRA_MIN_FILE);
+fs.writeFileSync(SPEC_EXTRA_MIN_FILE, JSON.stringify(specExtraJson));
