@@ -1,7 +1,9 @@
 import Decimal from 'decimal.js';
 import BLACKBODY from '../blackbody.json';
 
+// L₀, or zero point luminosity.
 const BASE_LUMINOSITY = Decimal('3.0128e28');
+// That crazy fucking fireball hovering nearby.
 const SUN_LUMINOSITY = Decimal('3.828e26');
 
 // Linear interpolation.

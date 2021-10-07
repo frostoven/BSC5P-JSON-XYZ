@@ -13,7 +13,7 @@ const key = {
   glow: 'g',
   // If the star has a range, or uncertainty, a colour averaged between those
   // values is created and stored here.
-  rangedGlow: 'v',
+  rangedGlow: 'v', // TODO: remove me.
   // If the star has siblings, its siblings merged into one colour and stored
   // here.
   averagedMulti: 'h',

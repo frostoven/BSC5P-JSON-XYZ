@@ -1,6 +1,8 @@
-## Amendments
+## Amendments and errata
 Amendments can be made by modifying or adding new data to the files located in
 ammendmentFactory.
+* To amend data of existing stars, add your change to `amendAsNeeded.js`. 
+* To add a new star that isn't generated at all, add your star to `loopThroughCustomStars.js`.
 
 In order for an amendment to be effective, the name used to identify the object
 needs to be consistent or we'll end up with multiple amendments overwriting
