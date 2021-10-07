@@ -28,14 +28,14 @@ import project3d from './utils/project3d';
 
 const JSON_PADDING = 4;
 const SIMBAD_CACHE_DIR = './simbad.u-strasbg.fr_cache';
-const RESULT_PRETTY_FILE = 'bsc5p_radec.json';
-const RESULT_MIN_FILE = 'bsc5p_radec_min.json';
-const RESULT_3D_PRETTY_FILE = 'bsc5p_3d.json';
-const RESULT_3D_MIN_FILE = 'bsc5p_3d_min.json';
-const RESULT_NAMES_PRETTY_FILE = 'bsc5p_names.json';
-const RESULT_NAMES_MIN_FILE = 'bsc5p_names_min.json';
-const SPEC_EXTRA_PRETTY_FILE = 'bsc5p_spectral_extra.json';
-const SPEC_EXTRA_MIN_FILE = 'bsc5p_spectral_extra_min.json';
+const RESULT_PRETTY_FILE = './catalogs/bsc5p_radec.json';
+const RESULT_MIN_FILE = './catalogs/bsc5p_radec_min.json';
+const RESULT_3D_PRETTY_FILE = './catalogs/bsc5p_3d.json';
+const RESULT_3D_MIN_FILE = './catalogs/bsc5p_3d_min.json';
+const RESULT_NAMES_PRETTY_FILE = './catalogs/bsc5p_names.json';
+const RESULT_NAMES_MIN_FILE = './catalogs/bsc5p_names_min.json';
+const SPEC_EXTRA_PRETTY_FILE = './catalogs/bsc5p_spectral_extra.json';
+const SPEC_EXTRA_MIN_FILE = './catalogs/bsc5p_spectral_extra_min.json';
 
 // Contains the processed catalog data with right ascension / declination.
 let raDecJson = [];
