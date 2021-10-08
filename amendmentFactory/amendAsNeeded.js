@@ -60,6 +60,14 @@ const amendmentData = {
   },
   ******************************************
   */
+  595: {
+    // Star does not have parallax info by default.
+    // Source: https://uk.wikipedia.org/wiki/HD12446
+    overrides: {
+      parallax: 0.02345,
+    },
+    fallback: [ 'HD12446', '* alf Psc B', 'WEB 1992' ],
+  },
   1879: {
     overrides: {
       // Default is HD36861, which is not ideal. Use popular name instead.
