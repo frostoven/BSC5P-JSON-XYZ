@@ -39,7 +39,7 @@ come in two variants: regular, and minified. Regular is formatted for ease of
 human readability while minified is squashed into an unreadable mess easier for
 computers to read.
 
-Note that each entry in each file has in ID number (except for
+Note that each entry in each file has an ID number (except for
 `blackbody.json`). These IDs are used to identify the same stars across files.
 
 **Files provided:**
@@ -52,7 +52,7 @@ Note that each entry in each file has in ID number (except for
   style.
 * `bsc5p_names`: Contains additional names for each star.
 * `bsc5p_spectral_extra`: Contains extra spectral information. Some of it is
-  derived by this application while others are obtained from acedemic
+  calculated by this application while others are obtained from acedemic
   resources.
 * `blackbody`: Contains a table of blackbody temperatures converted to RGB
   colour. This is used internally by this repo's scripts to try dynamically
@@ -91,7 +91,7 @@ that use them.
 | `x` | number   | --     | `bsc5p_3d` | `x` coordinate in parsecs.
 | `y` | number   | --     | `bsc5p_3d` | `y` coordinate in parsecs.
 | `z` | number   | --     | `bsc5p_3d` | `z` coordinate in parsecs.
-| `N` | number   | `L☉`   | `bsc5p_radec` `bsc5p_3d` | Naively calculated luminosity. This does not take dust and other obstruction into account, and can vary several orders of magnitude from real data. This is however still very useful, because being derived directly from perceived brightness and distance, it gives visualisation software a highly consistent base for realistic-looking 3D calculations. This value may therefore be thought of more as a custom brightness-distance unit than real luminosity. The intended use of this value is generating star size and size falloff based on distance from the software camera (see [Inverse Square Law of Brightness](http://www.astronomy.ohio-state.edu/~pogge/Ast162/Unit1/bright.html)).
+| `N` | number   | `L☉`   | `bsc5p_radec` `bsc5p_3d` | Naively calculated luminosity. This does not take dust and other obstruction into account, and can vary several orders of magnitude from real data. This is however still very useful, because being calculated directly from perceived brightness and distance, it gives visualisation software a highly consistent base for realistic-looking 3D calculations. This value may therefore be thought of more as a custom brightness-distance unit than real luminosity. The intended use of this value is generating star size and size falloff based on distance from the software camera (see [Inverse Square Law of Brightness](http://www.astronomy.ohio-state.edu/~pogge/Ast162/Unit1/bright.html)).
 | `K` | vector3  | `K`    | `bsc5p_radec` `bsc5p_3d` | Colour of star approximated from star temperature in kelvin (AKA blackbody temperature), converted to RGB. A lot of effort and research has gone into estimating this as physically accurately as humanly possible (while keeping in mind it's still an approximation nonetheless, and will vary by star class and observational quality).
 
 **Spectral information**
