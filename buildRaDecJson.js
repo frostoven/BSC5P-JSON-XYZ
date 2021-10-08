@@ -20,7 +20,7 @@ import extractSpectralInformation from './utils/extractSpectralInfo.js';
 import { getStarColors, removeRedundantColorInfo, key as paletteKey } from './utils/colorProcessing';
 import {
   calculateAbsoluteMagnitude,
-  calculateLuminosityLSub0,
+  calculateLuminosity,
 } from './utils/mathUtils.js'
 import { loopThroughData, amendAsNeeded } from './amendmentFactory';
 import { raToRadians, decToRadians } from './utils/mathUtils';
@@ -314,7 +314,7 @@ function processEntry(entry, isCustomEntry) {
 
   // If not undefined, then an override was specified in which case we skip calculation.
   if (typeof star.naiveLuminosity === 'undefined') {
-    star.naiveLuminosity = calculateLuminosityLSub0(star.absoluteMagnitude);
+    star.naiveLuminosity = calculateLuminosity(star.absoluteMagnitude);
   }
 
   if (star.ra < 0) {
