@@ -68,6 +68,14 @@ const amendmentData = {
     },
     fallback: [ 'HD12446', '* alf Psc B', 'WEB 1992' ],
   },
+  887: {
+    // Star does not have parallax info by default.
+    // Source: https://uk.wikipedia.org/wiki/HD18519
+    overrides: {
+      parallax: 0.01115,
+    },
+    fallback: [ 'HD18519', 'PLX 620', 'WEB 2745' ],
+  },
   1879: {
     overrides: {
       // Default is HD36861, which is not ideal. Use popular name instead.
