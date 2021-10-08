@@ -76,6 +76,46 @@ const amendmentData = {
     },
     fallback: [ 'HD18519', 'PLX 620', 'WEB 2745' ],
   },
+  1230: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/19461/hd25007
+    overrides: {
+      parallax: 0.00944,
+    },
+    fallback: [ 'HD25007', 'TYC 4522-1564-1', 'WEB 3733' ],
+  },
+  1417: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/1_Camelopardalis
+    overrides: {
+      parallax: 0.00125,
+    },
+    fallback: [ 'HD28446', '* 1 Cam', 'WEB 4067' ],
+  },
+  1504: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/21756/hip21756
+    overrides: {
+      parallax: 0.0322997,
+    },
+    fallback: [ 'HIP 21756', 'HD30003', 'HR1504' ],
+  },
+  1505: {
+    // Star does not have parallax info by default.
+    // Source: https://uk.wikipedia.org/wiki/HD30020
+    overrides: {
+      parallax: 0.008039,
+    },
+    fallback: [ 'HD30020', 'TIC 56129374', 'Renson 7710' ],
+  },
+  1701: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/24349/hd33883
+    overrides: {
+      parallax: 0.00371,
+    },
+    fallback: [ 'HD33883', 'BD+01 938A', 'WEB 4726' ],
+  },
   1879: {
     overrides: {
       // Default is HD36861, which is not ideal. Use popular name instead.
