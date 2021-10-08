@@ -1,12 +1,16 @@
 ## Bright Star Catalogue in JSON format, optimised for games and visualisation software
 
-This catalog targets video game developers and visualisation artists that need
-easy-to-use, real star catalogs at their disposal. This catalog contains all
+This catalog offers star positions both as `x,y,z` coordinates for
+**3D software**, and right ascension / declination for **2D software**. It
+targets video game developers and visualisation artists that need easy-to-use,
+real star catalogs at their disposal.
+
+This catalog contains all
 the stars in the [BSC5P](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html)
 catalog (all the stars we can see with the naked eye), but with more accurate
 information taken from modern stellar data.  It uses
 [this catalog](https://github.com/aggregate1166877/BSC5P-JSON) as its base but
-adds a huge amount of data, much of which is derived.
+adds a huge amount of data, much of which is inferred. 
 
 Some concessions are made. For example, real spectral data might tell us "this
 star is either an A type, or an F type. We're certain it's _one of_ the two,
@@ -23,12 +27,11 @@ adjustment is made.
 The scripts used to create all JSON files are included in this repo in case
 anyone needs the data adjusted (see 'Scripts provided' section below).
 
-This repo came into existence because of a lack of ready-made resources while
-working on the [Cosmosis game project](https://github.com/aggregate1166877/Cosmosis).
-
-## Format
-As this catalog primarily targets video games, things are keep things small for
-faster loading / efficient bandwidth usage.
+The [Cosmosis game project](https://github.com/aggregate1166877/Cosmosis) has
+successfully used this catalog to generate the following visualisation:
+<div align="center">
+  <img src="demo.gif">
+</div>
 
 ### Catalog files
 Catalog files are located in the [catalogs](catalogs) directory. Most of them
@@ -55,44 +58,66 @@ Note that each entry in each file has in ID number (except for
   colour. This is used internally by this repo's scripts to try dynamically
   generate accurate colour for each star.
 
+<!-- Add when ready:
+Note that minified files place each entry on its own line. This adds roughly
+1KB size per 1000 stars, but allows you to rapidly find star entries based on
+offset rather than parsing.
+//
+TODO: consider doing real buffered loading. As in, fixed line width. This gives
+      us both real json and position independent line reading.
+-->
+
 ### Script files
 See [the build doc](BUILDING.md) if you're a developer wishing to build the
 catalogs from scratch yourself.
 
 ### JSON keys
+Because this catalog primarily targets video games, things are keep small for
+faster loading and efficient usage of bandwidth.  JSON keys are usually a
+single character (2 characters for `to` / `or` field in the `spectral_extra`
+file). This often reduces each file by over 50% which, due to the massive
+amount of star data,  equates to megabytes for some files.
 
-| Key | Type     | Symbol | Description                            |
-| --- | -------- | ------ | -------------------------------------- |
-| `n` | string   | n/a    | A single name given to star. Additional known names for each star stored in [bsc5p_names.json](catalogs/bsc5p_names.json).
-| `i` | number or string  | n/a | Original BSC5P line number, or 'Custom [n]' if added via the amendments mechanism.
-| `r` | number   |  `α`   | Right ascension in **radians**.
-| `d` | number   |  `δ`   | Declination in **radians**.
-| `p` | number   | `pc`   | Distance in parsecs. 1 parsec ≈ 3.26 light-years.
-| `b` | number   | `m`, `vMag` | Apparent brightness (also known as apparent magnitude, visual magnitude; not to be confused with absolute magnitude).
-| `a` | number   | `M`, `VMag` | Naively calculated absolute magnitude. This does not take dust and other obstruction into account.
-| `L` | number   | `L☉`   | Real luminosity as determined by academic sources. Very few stars in this catalog have this value defined due to the difficulty in determining it.
-| `N` | number   | `L☉`   | Naively calculated luminosity. This does not take dust and other obstruction into account, and can vary several orders of magnitude from real data. This is however still very useful, because being derived directly from perceived brightness and distance, it gives visualisation software a highly consistent base for realistic-looking 3D calculations. This value may therefore be thought of more as a custom brightness-distance unit than real luminosity. The intended use of this value is generating star size and size falloff based on distance from the software camera (see [Inverse Square Law of Brightness](http://www.astronomy.ohio-state.edu/~pogge/Ast162/Unit1/bright.html)).
-| `K` | vector3  | `K`    | Colour of star approximated from star temperature in kelvin (AKA blackbody temperature), converted to RGB. A lot of effort and research has gone into estimating this as physically accurately as humanly possible (while keeping in mind it's still an approximation nonetheless, and will vary by star class and observational quality).
-| `g` | hex string | n/a  | Colour or glow of star, but cartoony instead of real.
-| `x` | number   | n/a    | Ecliptic-projected x coordinate (parsecs). Points north (???).
-| `y` | number   | n/a    | Ecliptic-projected y coordinate (parsecs). Points up (???).
-| `z` | number   | n/a    | Ecliptic-projected z coordinate (parsecs). (direction ???).
-| `s` | string   | n/a    | Spectral classification.
+The table below describes what each of these keys mean, and lists the files
+that use them.
+
+| Key | Type     | Symbol | Used by | Description                  |
+| --- | -------- | ------ | ------- | ---------------------------- |
+| `i` | number, string | -- | `bsc5p_radec` `bsc5p_3d` `bsc5p_names` `bsc5p_spectral_extra` | Original BSC5P line ID, or 'Custom [n]' if added via the amendments mechanism. Used to link stars between files.
+| `n` | string   | --     | `bsc5p_radec` `bsc5p_3d` | A single name given to star. Additional known names for each star stored in [bsc5p_names.json](catalogs/bsc5p_names.json).
+| `p` | number   | `pc`   | `bsc5p_radec` `bsc5p_3d` | Distance in parsecs. 1 parsec ≈ 3.26 light-years.
+| `r` | number   | `α`    | `bsc5p_radec` | Right ascension in **radians**.
+| `d` | number   | `δ`    | `bsc5p_radec` | Declination in **radians**.
+| `x` | number   | --     | `bsc5p_3d` | `x` coordinate in parsecs.
+| `y` | number   | --     | `bsc5p_3d` | `y` coordinate in parsecs.
+| `z` | number   | --     | `bsc5p_3d` | `z` coordinate in parsecs.
+| `N` | number   | `L☉`   | `bsc5p_radec` `bsc5p_3d` | Naively calculated luminosity. This does not take dust and other obstruction into account, and can vary several orders of magnitude from real data. This is however still very useful, because being derived directly from perceived brightness and distance, it gives visualisation software a highly consistent base for realistic-looking 3D calculations. This value may therefore be thought of more as a custom brightness-distance unit than real luminosity. The intended use of this value is generating star size and size falloff based on distance from the software camera (see [Inverse Square Law of Brightness](http://www.astronomy.ohio-state.edu/~pogge/Ast162/Unit1/bright.html)).
+| `K` | vector3  | `K`    | `bsc5p_radec` `bsc5p_3d` | Colour of star approximated from star temperature in kelvin (AKA blackbody temperature), converted to RGB. A lot of effort and research has gone into estimating this as physically accurately as humanly possible (while keeping in mind it's still an approximation nonetheless, and will vary by star class and observational quality).
 
 **Spectral information**
 
-| Key | Type     | Description                                     |
-| --- | -------- | ----------------------------------------------- |
-| `C` | string   | Spectral type classification (O, B, A, F, G, K, M).
-| `S` | number   | Spectral type subclass (0-9). 0=hottest, 9=coldest. Fractions exist (eg. Mu Normae is O9.7 \[that's an `O`, not a `0`]).
-| `L` | number   | Luminosity class. Higher numbers generally mean lower surface temperatures.
-| `to` | object or null | If specified, the star is in range of the above and whatever is specified here. Used to indicate uncertainty.
-| `or` | object or null | If specified, the star is either the above or whatever is specified in this object. Used to indicate uncertainty.
-| `e`¹ | array | Containing siblings, if the original data was presented that way.
-| `q` | string   | Skipped spectral information. These usually contain peculiarities in spectral lines, but may also contain data the parser did not understand.
+Below follows extra spectral information only found in the `bsc5p_spectral_extra` file.
+
+| Key | Type     | Symbol     | Description                                     |
+| --- | -------- | ---------- | ----------------------------------------------- |
+| `L` | number   | `L☉`   | Real luminosity as determined by academic sources. Very few stars in this catalog have this value defined due to the difficulty in determining it.
+| `b` | number   | `m`, `vMag` | Apparent brightness (also known as apparent magnitude, visual magnitude; not to be confused with absolute magnitude).
+| `a` | number   | `M`, `VMag` | Naively calculated absolute magnitude. This does not take dust and other obstruction into account.
+| `g` | string   | --     | Colour or glow of star, but cartoony instead of real.
+| `s` | string   | --     | Spectral classification.
+| `C` | string   | -- | Spectral type classification (O, B, A, F, G, K, M).
+| `S` | number   | -- | Spectral type subclass (0-9). 0=hottest, 9=coldest. Fractions exist (eg. Mu Normae is O9.7 \[that's an `O`, not a `0`]).
+| `L` | number   | -- | Luminosity class. Higher numbers generally mean lower surface temperatures.
+| `to` | object or null | -- | If specified, the star is in range of the above and whatever is specified here. Used to indicate uncertainty.
+| `or` | object or null | -- | If specified, the star is either the above or whatever is specified in this object. Used to indicate uncertainty.
+| `e`¹ | array | -- | Containing siblings, if the original data was presented that way.
+| `q` | string   | -- | Skipped spectral information. These usually contain peculiarities in spectral lines, but may also contain data the parser did not understand.
 
 1: Note that the medium- to long-term goal here is to eliminate sibling data altogether, and present that data as separate stars instead.
 
+Flags indicating carbon stars, S-/T-type stars, T Tauri and Wolf-Rayet planned for future versions.
+
+<!--
 Spectral data planned for addition in future versions:
 
 | Key | Type     | Description                                     |
@@ -103,7 +128,7 @@ Spectral data planned for addition in future versions:
 | `S` | bool     | If true, this is an S type star. Else not set. As a side note, a significant fraction of S type stars are variable.
 | `T` | bool     | If true, this is a T Tauri star. Else not set.
 | `W` | bool     | If true, this is a Wolf-Rayet star. Else not set.
-| `U` | string   | Luminosity data the conversion script doesn't know how to deal with.
+-->
 
 ## Note on interpreted spectral data
 Parsing spectral luminosity data is insanely complex because of how
