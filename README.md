@@ -10,7 +10,10 @@ the stars in the [BSC5P](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc
 catalog (all the stars we can see with the naked eye), but with more accurate
 information taken from modern stellar data.  It uses
 [this catalog](https://github.com/aggregate1166877/BSC5P-JSON) as its base but
-adds a huge amount of data, much of which is inferred. 
+adds a huge amount of data, much of which is inferred (such as luminosity and
+colour info). [Extra data not inferred](amendmentFactory/amendAsNeeded.js)
+include parallax information and popular names manually researched and added
+with citations due to these values missing in the original data sources.
 
 Some concessions are made. For example, real spectral data might tell us "this
 star is either an A type, or an F type. We're certain it's _one of_ the two,
