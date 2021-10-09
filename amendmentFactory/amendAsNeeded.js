@@ -116,6 +116,34 @@ const amendmentData = {
     },
     fallback: [ 'HD33883', 'BD+01 938A', 'WEB 4726' ],
   },
+  1704: {
+    // Star does not have parallax info by default.
+    // Source: https://gea.esac.esa.int/archive/
+    overrides: {
+      parallax: 0.003695589756130208,
+    },
+    fallback: [ 'HD33948', 'BD-08 1059', 'CEL 574' ],
+  },
+  1771: {
+    // Star does not have parallax info by default.
+    // https://www.universeguide.com/star/25045/hd35162#distance
+    overrides: {
+      parallax: 0.01109,
+    },
+    fallback: [ 'HD35162', 'HIP25045', 'WEB 4858' ],
+  },
+  2332: {
+    // Star does not have parallax info by default, and is missing a pop name.
+    // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
+    overrides: {
+      parallax: 0.00209,
+    },
+    additions: {
+      // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
+      namesAlt: [ 'NAME RT Aurigae' ],
+    },
+    fallback: [ 'HD45412', 'PLX 1500', '* 48 Aur' ],
+  },
   1879: {
     overrides: {
       // Default is HD36861, which is not ideal. Use popular name instead.
