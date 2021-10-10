@@ -80,7 +80,7 @@ const amendmentData = {
     // Star does not have parallax info by default.
     // Source: https://www.universeguide.com/star/19461/hd25007
     overrides: {
-      parallax: 0.00944,
+      parallax: 0.00859,
     },
     fallback: [ 'HD25007', 'TYC 4522-1564-1', 'WEB 3733' ],
   },
@@ -96,7 +96,7 @@ const amendmentData = {
     // Star does not have parallax info by default.
     // Source: https://www.universeguide.com/star/21756/hip21756
     overrides: {
-      parallax: 0.0322997,
+      parallax: 0.03268,
     },
     fallback: [ 'HIP 21756', 'HD30003', 'HR1504' ],
   },
@@ -112,7 +112,7 @@ const amendmentData = {
     // Star does not have parallax info by default.
     // Source: https://www.universeguide.com/star/24349/hd33883
     overrides: {
-      parallax: 0.00371,
+      parallax: 0.00471,
     },
     fallback: [ 'HD33883', 'BD+01 938A', 'WEB 4726' ],
   },
@@ -128,21 +128,9 @@ const amendmentData = {
     // Star does not have parallax info by default.
     // https://www.universeguide.com/star/25045/hd35162#distance
     overrides: {
-      parallax: 0.01109,
+      parallax: 0.00927,
     },
     fallback: [ 'HD35162', 'HIP25045', 'WEB 4858' ],
-  },
-  2332: {
-    // Star does not have parallax info by default, and is missing a pop name.
-    // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
-    overrides: {
-      parallax: 0.00209,
-    },
-    additions: {
-      // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
-      namesAlt: [ 'NAME RT Aurigae' ],
-    },
-    fallback: [ 'HD45412', 'PLX 1500', '* 48 Aur' ],
   },
   1879: {
     overrides: {
@@ -181,6 +169,60 @@ const amendmentData = {
       parallax: 0.00443,
     },
     fallback: [ '* 50 Ori B', 'GCRV 3518', 'ADS 4263 B' ],
+  },
+  2332: {
+    // Star does not have parallax info by default, and is missing a pop name.
+    // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
+    overrides: {
+      parallax: 0.00209,
+    },
+    additions: {
+      // Source: https://www.universeguide.com/star/30827/rtaurigae#distance
+      namesAlt: [ 'NAME RT Aurigae' ],
+    },
+    fallback: [ 'HD45412', 'PLX 1500', '* 48 Aur' ],
+  },
+  2670: {
+    // Star does not have parallax info by default.
+    // Source: https://www.wikidata.org/wiki/Q3781275
+    overrides: {
+      parallax: 0.00092,
+    },
+    fallback: [ 'HD53755', 'ALS 156', 'WEB 6857' ],
+  },
+  2859: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/36251/hd59067#distance
+    overrides: {
+      parallax: 0.00206,
+    },
+    fallback: [ 'HD59067', 'HR2859', 'HR2859' ],
+  },
+  2870: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/36345/hip36345#distance
+    overrides: {
+      parallax: 0.00438,
+    },
+    fallback: [ 'HD59499', 'GC 10020', 'WEB 7231' ],
+  },
+  2890: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Castor_(star)
+    // Note: AKA Castor, this is actually a 6-star system.
+    overrides: {
+      parallax: 0.06410256410256411,
+    },
+    fallback: [ 'HD60178', 'NAME Castor B', 'WEB 7319' ],
+  },
+  2891: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/36850/castor#distance
+    // Note: AKA Castor, this is actually a 6-star system.
+    overrides: {
+      parallax: 0.06412,
+    },
+    fallback: [ 'HD60179', 'Alpha Geminorum', 'WEB 7320' ],
   },
 };
 
