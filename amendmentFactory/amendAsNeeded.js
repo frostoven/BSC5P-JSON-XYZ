@@ -224,6 +224,95 @@ const amendmentData = {
     },
     fallback: [ 'HD60179', 'Alpha Geminorum', 'WEB 7320' ],
   },
+  3056: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/38087/hd63926#distance
+    overrides: {
+      parallax: 0.00061,
+    },
+    fallback: [ 'HD63926', 'HR 2', 'WEB 65' ],
+  },
+  3307: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Epsilon_Carinae
+    overrides: {
+      parallax: 0.00539,
+    },
+    additions: {
+      // Does not include pop name by default.
+      namesAlt: [ 'NAME Epsilon Carinae' ],
+    },
+    fallback: [ 'HD71129', '* eps Car A', 'WEB 7952' ],
+  },
+  3328: {
+    // Star does not have parallax info by default.
+    // Source: https://zh.wikipedia.org/wiki/HD_71488
+    overrides: {
+      parallax: 0.000005,
+    },
+    fallback: [ 'HD71488', 'TIC 184071287', 'GC 11542' ],
+  },
+  4210: {
+    // Star does not have parallax info by default.
+    // Source: https://www.constellation-guide.com/eta-carinae/
+    overrides: {
+      parallax: 0.000434875256032807,
+    },
+    fallback: [ 'HD93308', 'null', 'null' ],
+  },
+  4375: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Xi_Ursae_Majoris
+    overrides: {
+      parallax: 0.1132,
+    },
+    fallback: [ 'HD98231', 'Zkh 153', 'WEB 9947' ],
+  },
+  4401: {
+    // Star does not have parallax info by default.
+    // Source: https://www.wikidata.org/wiki/Q10850805
+    overrides: {
+      parallax: 0.00808,
+    },
+    fallback: [ 'HD99104', 'GC 15649', 'WEB 9994' ],
+  },
+  4615: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/59050/hd105151#distance
+    overrides: {
+      parallax: 0.00794,
+    },
+    fallback: [ 'HD105151', 'TIC 379783522', 'SKY# 22740' ],
+  },
+  4730: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Acrux
+    overrides: {
+      parallax: 0.1013,
+    },
+    additions: {
+      // Does not include pop name by default.
+      namesAlt: [ 'NAME Acrux' ],
+    },
+    fallback: [ 'HD108248', '* alf01 Cru', 'ALS 14968' ],
+  },
+  4731: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Acrux
+    // Note: part of the Acrux binary pair.
+    overrides: {
+      parallax: 0.1013,
+    },
+    fallback: [ 'HD108249', '* alf02 Cru', '[B10] 3238' ],
+  },
+  4967: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/64217/15canumvenaticorum#distance
+    overrides: {
+      parallax: 0.0027,
+    },
+    fallback: [ 'HD114376', '* 15 CVn', 'WEB 11352' ],
+  },
 };
 
 // -- ✄ Cut here ------------------------------------------------ //
