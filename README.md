@@ -9,7 +9,7 @@ This catalog contains all
 the stars in the [BSC5P](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html)
 catalog (all the stars we can see with the naked eye), but with more accurate
 information taken from modern stellar data.  It uses
-[this catalog](https://github.com/aggregate1166877/BSC5P-JSON) as its base but
+[this catalog](https://github.com/feynmansbongos/BSC5P-JSON) as its base but
 adds a huge amount of data, much of which is inferred (such as luminosity and
 colour info). [Extra data not inferred](amendmentFactory/amendAsNeeded.js)
 include parallax information and popular names manually researched and added
@@ -30,7 +30,7 @@ adjustment is made.
 The scripts used to create all JSON files are included in this repo in case
 anyone needs the data adjusted (see 'Scripts provided' section below).
 
-The [Cosmosis game project](https://github.com/aggregate1166877/Cosmosis) has
+The [Cosmosis game project](https://github.com/feynmansbongos/Cosmosis) has
 successfully used this catalog to generate the following visualisation:
 <div align="center">
   <img src="demo.gif">
