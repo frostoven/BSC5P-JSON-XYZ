@@ -367,6 +367,119 @@ const amendmentData = {
     },
     fallback: [ 'HD132029', 'SAO 64408', 'WEB 12527' ],
   },
+  5605: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Pi_Lupi
+    overrides: {
+      parallax: 0.00736,
+    },
+    fallback: [ 'HD133242', 'TYC 8297-4705-1', 'ALS 17476' ],
+  },
+  5606: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Pi_Lupi
+    overrides: {
+      parallax: 0.00736,
+    },
+    fallback: [ 'HD133243', 'TYC 8297-4705-2', 'HR 5606' ],
+  },
+  5704: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Gamma_Circini
+    overrides: {
+      parallax: 0.00727,
+    },
+    fallback: [ 'HD136415', '[B10] 3901', 'WEB 12849' ],
+  },
+  5728: {
+    // Star does not have parallax info by default.
+    // Source: https://theskylive.com/sky/stars/eta-coronae-borealis-star
+    overrides: {
+      parallax: 0.05370569280343716,
+    },
+    fallback: [ 'HD137108', 'PLX 3480', 'GJ 584 B' ],
+  },
+  6026: {
+    // Star does not have parallax info by default.
+    // Source: https://in-the-sky.org/data/object.php?id=TYC6209-1536-1
+    // Note: strongly magnetic star.
+    overrides: {
+      parallax: 0.00710227,
+    },
+    fallback: [ 'HD145501', 'Renson 41240', 'WEB 13418' ],
+  },
+  6406: {
+    // Star does not have parallax info by default.
+    // Source: https://in-the-sky.org/data/object.php?id=TYC990-2133-1
+    overrides: {
+      parallax: 0.00906618,
+    },
+    fallback: [ 'HD156014', 'PLX 3912', 'WEB 14238' ],
+  },
+  6758: {
+    // Star does not have parallax info by default.
+    // Source: https://zh.wikipedia.org/wiki/HD_165475
+    overrides: {
+      parallax: 0.000009,
+    },
+    fallback: [ 'HD165475', 'PPM 134249', 'WEB 15011' ],
+  },
+  6803: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/89023/hip89023#distance
+    overrides: {
+      parallax: 0.00379,
+    },
+    fallback: [ 'HD166479', 'WDS J18101+1629A', 'WEB 15109' ],
+  },
+  6848: {
+    // Star does not have parallax info by default.
+    // Source: https://www.universeguide.com/star/89023/hip89023#distance
+    overrides: {
+      parallax: 0.00002,
+    },
+    fallback: [ 'HD168021', 'AAVSO 1812-18', 'YZ 108 7613' ],
+  },
+  7059: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/5_Aquilae
+    overrides: {
+      parallax: 0.00894,
+    },
+    fallback: [ 'HD173654', 'ADS 11667 AB', 'UBV 15959' ],
+  },
+  7417: {
+    // Star does not have parallax info by default.
+    // Source: https://in-the-sky.org/data/object.php?id=TYC2133-2964-1
+    overrides: {
+      parallax: 0.0075075,
+    },
+    fallback: [ 'HD183912', 'TYC 2133-2964-1', '* bet01 Cyg A' ],
+  },
+  7497: {
+    // Star does not have parallax info by default.
+    // Source: https://www.geody.com/geolook.php?world=space&q=HD186203
+    overrides: {
+      parallax: 0.00434,
+    },
+    fallback: [ 'HD186203', '* chi Aql A', 'WEB 17016' ],
+  },
+  8310: {
+    // Star does not have parallax info by default.
+    // Source: https://en.wikipedia.org/wiki/Mu_Cygni
+    overrides: {
+      parallax: 0.0452207,
+    },
+    fallback: [ 'HD206827', 'GC 30437', 'WEB 19378' ],
+  },
+  9002: {
+    // Star does not have parallax info by default.
+    // Source: https://www.geody.com/geolook.php?world=space&q=HD223024
+    overrides: {
+      parallax: 0.01537,
+    },
+    fallback: [ 'HD223024', '** H 224', 'WEB 20652' ],
+  },
 };
 
 // -- ✄ Cut here ------------------------------------------------ //
