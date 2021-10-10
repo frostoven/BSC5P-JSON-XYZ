@@ -258,7 +258,7 @@ const amendmentData = {
     overrides: {
       parallax: 0.000434875256032807,
     },
-    fallback: [ 'HD93308', 'null', 'null' ],
+    fallback: [ 'HD93308', 'GCRV 6692', 'WEB 9578' ],
   },
   4375: {
     // Star does not have parallax info by default.
@@ -312,6 +312,33 @@ const amendmentData = {
       parallax: 0.0027,
     },
     fallback: [ 'HD114376', '* 15 CVn', 'WEB 11352' ],
+  },
+  4968: {
+    // Star does not have parallax info and pop name by default.
+    // Source: https://en.wikipedia.org/wiki/Alpha_Comae_Berenices
+    overrides: {
+      parallax: 0.0581,
+    },
+    additions: {
+      namesAlt: [ 'NAME Alpha Comae Berenices' ],
+    },
+    fallback: [ 'HD114378', 'GJ 501 A', 'HR 4968' ],
+  },
+  4969: {
+    // Star does not have parallax info by default.
+    // Source: https://theskylive.com/sky/stars/alpha-comae-berenices-star
+    overrides: {
+      parallax: 0.06983240223463687,
+    },
+    fallback: [ 'HD114379', 'GJ 501 B', 'ADS 8804 B' ],
+  },
+  5120: {
+    // Star does not have parallax info by default.
+    // Source: https://zh.wikipedia.org/wiki/HD_118349
+    overrides: {
+      parallax: 0.000021,
+    },
+    fallback: [ 'HD118349', 'IRAS 13340-2614', 'WEB 11724' ],
   },
 };
 
