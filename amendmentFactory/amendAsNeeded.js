@@ -340,6 +340,33 @@ const amendmentData = {
     },
     fallback: [ 'HD118349', 'IRAS 13340-2614', 'WEB 11724' ],
   },
+  5477: {
+    // Star does not have parallax and spectral info by default.
+    // Source: https://en.wikipedia.org/wiki/Zeta_Bo%C3%B6tis
+    overrides: {
+      parallax: 0.01807,
+      spectralType: 'A2III',
+    },
+    fallback: [ 'HD129246', '* zet Boo B', 'WEB 12368' ],
+  },
+  5478: {
+    // Star does not have parallax and spectral info by default.
+    // Source: https://en.wikipedia.org/wiki/Zeta_Bo%C3%B6tis
+    overrides: {
+      parallax: 0.01807,
+      spectralType: 'A1V',
+    },
+    fallback: [ 'HD129247', '* zet Boo A', 'HR 5478' ],
+  },
+  5569: {
+    // Star does not have parallax and spectral info by default.
+    // Source: https://en.wikipedia.org/wiki/HD_132029
+    overrides: {
+      parallax: 0.01044,
+      spectralType: 'A2V',
+    },
+    fallback: [ 'HD132029', 'SAO 64408', 'WEB 12527' ],
+  },
 };
 
 // -- ✄ Cut here ------------------------------------------------ //
