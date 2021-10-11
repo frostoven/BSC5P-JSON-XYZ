@@ -2,8 +2,8 @@
 
 This catalog offers star positions both as `x,y,z` coordinates for
 **3D software**, and right ascension / declination for **2D software**. It
-targets video game developers and visualisation artists that need easy-to-use,
-real star catalogs at their disposal.
+targets video game developers and visualisation artists that need easy-to-use
+star catalogs based on real data at their disposal.
 
 This catalog contains all
 the stars in the [BSC5P](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html)
@@ -15,18 +15,6 @@ colour info). [Extra data not inferred](amendmentFactory/amendAsNeeded.js)
 include parallax information and popular names manually researched and added
 with citations due to these values missing in the original data sources.
 
-Some concessions are made. For example, real spectral data might tell us "this
-star is either an A type, or an F type. We're certain it's _one of_ the two,
-but unsure which _exactly_." This makes visualisation difficult - we can't draw
-a star that's defined as two completely different things. This catalog will in
-such cases average between the two possibilities and provide you a single
-value. In case this is unwanted, the original spectral data string is still
-provided for you to process yourself. Note also that some stars have unique
-tacked-on special definitions (officially), meaning that automatic calculation
-will produce inaccurate results. In such cases manual adjustment *has* to be
-done. Many of these special cases will simply be wrong until a manual
-adjustment is made.
-
 The scripts used to create all JSON files are included in this repo in case
 anyone needs the data adjusted (see 'Scripts provided' section below).
 
@@ -35,6 +23,38 @@ successfully used this catalog to generate the following visualisation:
 <div align="center">
   <img src="demo.gif">
 </div>
+
+### Caveats and limitations
+
+#### Spectral data
+Some concessions are made. For example, real spectral data might tell us "this
+star is either an A type, or an F type. We're certain it's _one of_ the two,
+but unsure which _exactly_." This makes visualisation difficult - we can't draw
+a star that's defined as two completely different things. This catalog will in
+such cases average between the two possibilities and provide you a single
+value. In case this is unwanted, the original spectral data string is still
+provided for you to process yourself. Note that a small amount of spectral data
+for sibling stars are incorrectly parsed by this catalog's scripts due to edge
+cases and odd choices of classification in the source.
+
+#### Distance, temperature, luminosity
+Uncertainty in distance is discarded. The same logic applies as above: if we
+know an object is 10-20 parsecs away in a 3D world, we cannot draw it at both
+10 and 20 parsecs (and everything in between). Instead, a value of 15 parsecs
+is provided in this case as a middle-ground. Temperature and other values also
+follow this approach. Two fields are provided for luminosity: academically
+derived, and naively calculated. If a field is known to be inaccurate overall,
+the JSON keys table below will describe that field as an approximation.
+
+#### Special and non-stars
+S-type and Wolf-Rayet stars are currently excluded (42 total). Non-star items
+(such as clusters, galaxies) are included but have no colour info,
+and no specially identifying info (i.e. you'll need to manually check for them
+by name when visualising). All supernovae are currently excluded (9 total).
+
+All special stars will be included in coming months. Non-stars will have a
+field added indicating their type (open / globular cluster, supernova, galaxy,
+etc).
 
 ### Catalog files
 Catalog files are located in the [catalogs](catalogs) directory. Most of them
@@ -88,12 +108,12 @@ that use them.
 | --- | -------- | ------ | ------- | ---------------------------- |
 | `i` | number, string | -- | `bsc5p_radec` `bsc5p_3d` `bsc5p_names` `bsc5p_spectral_extra` | Original BSC5P line ID, or 'Custom [n]' if added via the amendments mechanism. Used to link stars between files.
 | `n` | string   | --     | `bsc5p_radec` `bsc5p_3d` | A single name given to star. Additional known names for each star stored in [bsc5p_names.json](catalogs/bsc5p_names.json).
-| `p` | number   | `pc`   | `bsc5p_radec` `bsc5p_3d` | Distance in parsecs. 1 parsec ≈ 3.26 light-years.
+| `p` | number   | `pc`   | `bsc5p_radec` `bsc5p_3d` | Distance in parsecs, ignoring uncertainty. 1 parsec ≈ 3.26 light-years.
 | `r` | number   | `α`    | `bsc5p_radec` | Right ascension in **radians**.
 | `d` | number   | `δ`    | `bsc5p_radec` | Declination in **radians**.
-| `x` | number   | --     | `bsc5p_3d` | `x` coordinate in parsecs.
-| `y` | number   | --     | `bsc5p_3d` | `y` coordinate in parsecs.
-| `z` | number   | --     | `bsc5p_3d` | `z` coordinate in parsecs.
+| `x` | number   | --     | `bsc5p_3d` | `x` coordinate approximation in parsecs.
+| `y` | number   | --     | `bsc5p_3d` | `y` coordinate approximation in parsecs.
+| `z` | number   | --     | `bsc5p_3d` | `z` coordinate approximation in parsecs.
 | `N` | number   | `L☉`   | `bsc5p_radec` `bsc5p_3d` | Naively calculated luminosity. This does not take dust and other obstruction into account, and can vary several orders of magnitude from real data. This is however still very useful, because being calculated directly from perceived brightness and distance, it gives visualisation software a highly consistent base for realistic-looking 3D calculations. This value may therefore be thought of more as a custom brightness-distance unit than real luminosity. The intended use of this value is generating star size and size falloff based on distance from the software camera (see [Inverse Square Law of Brightness](http://www.astronomy.ohio-state.edu/~pogge/Ast162/Unit1/bright.html)).
 | `K` | vector3  | `K`    | `bsc5p_radec` `bsc5p_3d` | Colour of star approximated from star temperature in kelvin (AKA blackbody temperature), converted to RGB. A lot of effort and research has gone into estimating this as physically accurately as humanly possible (while keeping in mind it's still an approximation nonetheless, and will vary by star class and observational quality).
 
@@ -146,15 +166,15 @@ is known to work with a lot of crazy luminosities (such as
 manually verified and confirmed to work correctly. No guarantees are made
 however and you're encouraged to raise an issue if you find a problem.
 
-Note that there are some multi-star systems which are, in the opinion of this
-writer, incorrectly catalogued, ex: `F0VkA2mA2_lB` (HD 432).
+Note that there are some multi-star systems which do not delimit siblings in
+their spectral classifications, ex: `F0VkA2mA2_lB` (HD 432).
 In this case, we have multiple spectral types bundled together with no
 delimiter (such as `+`). There are currently no plans to adjust the interpreter
 to handle this because previous attempts to do so actually caused some valid
 edge cases to come out wrong. These delimit-less classifications might however
 be adjusted ad-hoc in future via the `amendmentFactory` mechanism.
 
-#### Known edge cases
+#### Other known edge cases
 This catalog uses SIMBAD's spectral info because it's written more reasonably
 than some other sources. For example, HD 143454 has in the past been written as
 both `sdBe+gM3+Q0` and `M3IIIe_sh`. The parser will not understand the former
