@@ -9,9 +9,9 @@ utilises additional scripts in `./utils`.
 Ensure you have Node.js 14 or greater installed, and the latest version of npm.
 
 The scripts provided require that you download
-[BSC5P-JSON's bsc5p_min.json](https://github.com/aggregate1166877/BSC5P-JSON/blob/primary/bsc5p_min.json)
+[BSC5P-JSON's bsc5p_min.json](https://github.com/feynmansbongos/BSC5P-JSON/blob/primary/bsc5p_min.json)
 and
-[the SIMBAD cache directory](https://github.com/aggregate1166877/BSC5P-JSON/tree/primary/simbad.u-strasbg.fr_cache)
+[the SIMBAD cache directory](https://github.com/feynmansbongos/BSC5P-JSON/tree/primary/simbad.u-strasbg.fr_cache)
 into this directory for the scripts to work.
 
 Your directory structure should look similar to the following before starting:
@@ -32,3 +32,7 @@ You may then run the build script with:
     npm run buildRaDecJson
 
 This will replace all files except `blackbody.json` in `./catalogs`.
+
+If you wish to alter `blackbody.json`, have a look at `./spectrend`, which was
+used to generate the blackbody file. Note that's a C file, so you'll need gcc
+to compile / run it.
