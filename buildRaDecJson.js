@@ -205,9 +205,6 @@ function extractAsciiNamesParSpec(starName, dump) {
   if (parallax) {
     // Grab the first value.
     parallax = parallax.split(' ')[0];
-    if (parallax === '~' || !parallax) {
-      console.error('xx>',starName, 'does not have parallax info');
-    }
     // Simbad provides parallax as MAS. Divide it by 1000.
     parallax /= 1000;
   }
@@ -291,6 +288,10 @@ function processEntry(entry, isCustomEntry) {
   }
 
   star = amendAsNeeded(star);
+
+  if (star.parallax === '~' || !star.parallax) {
+    console.error('xx>', star.primaryName, 'does not have parallax info');
+  }
 
   if (typeof star.x === 'undefined' || star.y === 'undefined' || star.z === 'undefined') {
     const get3dPosition = project3d({
