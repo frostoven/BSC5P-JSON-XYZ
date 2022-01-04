@@ -204,8 +204,17 @@ Caching query responses from Simbad subject to the
 [SIMBAD Astronomical Database](http://simbad.u-strasbg.fr/simbad/) terms of
 use.
 
-Conversion scripts included in this project released to public domain under
-CC0.
+Conversion scripts included in this project are licensed under MIT.
+
+Generated catalogs provided with this repo licensed under Attribution 4.0
+International (CC BY 4.0).
+
+<!--
+Thanks to greedy corporations these days hurting creators with their own damn
+work, this legal section is getting unnecessarily complicated. Why can't I just
+license my work CC0 and be done with it. Now I need to split my code and
+catalogs into separate licenses and hope I know what I'm doing.
+-->
 
 ## Acknowledgments
 This research has made use of the SIMBAD database, operated at CDS, Strasbourg, France.
