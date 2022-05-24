@@ -171,8 +171,8 @@ their spectral classifications, ex: `F0VkA2mA2_lB` (HD 432).
 In this case, we have multiple spectral types bundled together with no
 delimiter (such as `+`). There are currently no plans to adjust the interpreter
 to handle this because previous attempts to do so actually caused some valid
-edge cases to come out wrong. These delimit-less classifications might however
-be adjusted ad-hoc in future via the `amendmentFactory` mechanism.
+unrelated edge cases to come out wrong. These delimit-less classifications might
+however be adjusted ad-hoc in future via the `amendmentFactory` mechanism.
 
 #### Other known edge cases
 This catalog uses SIMBAD's spectral info because it's written more reasonably
