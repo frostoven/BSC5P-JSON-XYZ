@@ -80,6 +80,8 @@ Note that each entry in each file has an ID number (except for
 * `blackbody`: Contains a table of blackbody temperatures converted to RGB
   colour. This is used internally by this repo's scripts to try dynamically
   generate accurate colour for each star.
+* `bubble`: Same as `bsc5p_3d`, but with all stars fixed to 500 parsec from
+  Earth. This is useful for GFX when needing to create a sphere of stars. 
 
 <!-- Add when ready:
 Note that minified files place each entry on its own line. This adds roughly
