@@ -32,6 +32,8 @@ const RESULT_PRETTY_FILE = './catalogs/bsc5p_radec.json';
 const RESULT_MIN_FILE = './catalogs/bsc5p_radec_min.json';
 const RESULT_3D_PRETTY_FILE = './catalogs/bsc5p_3d.json';
 const RESULT_3D_MIN_FILE = './catalogs/bsc5p_3d_min.json';
+const RESULT_BUBBLE_PRETTY_FILE = './catalogs/bubble.json';
+const RESULT_BUBBLE_MIN_FILE = './catalogs/bubble_min.json';
 const RESULT_NAMES_PRETTY_FILE = './catalogs/bsc5p_names.json';
 const RESULT_NAMES_MIN_FILE = './catalogs/bsc5p_names_min.json';
 const SPEC_EXTRA_PRETTY_FILE = './catalogs/bsc5p_spectral_extra.json';
@@ -41,6 +43,9 @@ const SPEC_EXTRA_MIN_FILE = './catalogs/bsc5p_spectral_extra_min.json';
 let raDecJson = [];
 // Contains the processed catalog data with x,y,z coordinates.
 let coordsJson = [];
+// Similar to coordsJson, but with all stars positioned exactly 1 parsec from
+// Earth.
+let bubbleJson = [];
 // Contains processed spectral information.
 let specExtraJson = [];
 // Contains additional names for each star. Each star tends to contain a lot
@@ -294,16 +299,24 @@ function processEntry(entry, isCustomEntry) {
   }
 
   if (typeof star.x === 'undefined' || star.y === 'undefined' || star.z === 'undefined') {
-    const get3dPosition = project3d({
+    const position3d = project3d({
       rightAscension: star.ra,
       declination: star.dec,
       distance: 1 / star.parallax,
     });
 
-    const { x, y, z } = get3dPosition;
-    star.x = x;
-    star.y = y;
-    star.z = z;
+    const bubblePosition = project3d({
+      rightAscension: star.ra,
+      declination: star.dec,
+      distance: 500,
+    });
+
+    star.x = position3d.x;
+    star.y = position3d.y;
+    star.z = position3d.z;
+    star.bubbleX = bubblePosition.x;
+    star.bubbleY = bubblePosition.y;
+    star.bubbleZ = bubblePosition.z;
   }
 
   // If not undefined, then an override was specified in which case we skip calculation.
@@ -368,6 +381,16 @@ function processEntry(entry, isCustomEntry) {
     y: star.y,
     z: star.z,
     p: 1 / star.parallax,
+    N: star.naiveLuminosity,
+    K: star.blackbodyColor,
+  });
+
+  bubbleJson.push({
+    i: star.lineId,
+    n: star.primaryName,
+    x: star.bubbleX,
+    y: star.bubbleY,
+    z: star.bubbleZ,
     N: star.naiveLuminosity,
     K: star.blackbodyColor,
   });
@@ -439,6 +462,12 @@ fs.writeFileSync(RESULT_3D_PRETTY_FILE, JSON.stringify(coordsJson, null, JSON_PA
 
 console.log('   ...', RESULT_3D_MIN_FILE);
 fs.writeFileSync(RESULT_3D_MIN_FILE, JSON.stringify(coordsJson));
+
+console.log('   ...', RESULT_BUBBLE_PRETTY_FILE);
+fs.writeFileSync(RESULT_BUBBLE_PRETTY_FILE, JSON.stringify(bubbleJson, null, JSON_PADDING));
+
+console.log('   ...', RESULT_BUBBLE_MIN_FILE);
+fs.writeFileSync(RESULT_BUBBLE_MIN_FILE, JSON.stringify(bubbleJson));
 
 console.log('   ...', RESULT_NAMES_PRETTY_FILE);
 fs.writeFileSync(RESULT_NAMES_PRETTY_FILE, JSON.stringify(extraNamesJson, null, JSON_PADDING));
