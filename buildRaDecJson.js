@@ -14,7 +14,7 @@
 //  node buildRaDecJson.js
 
 import fs from 'fs';
-import BSC5P_JSON from './bsc5p_min.json';
+import BSC5P_JSON from './bsc5p_min.json' assert { type: "json" };
 import getStarName from './utils/getStarName.js';
 import extractSpectralInformation from './utils/extractSpectralInfo.js';
 import { getStarColors, removeRedundantColorInfo, key as paletteKey } from './utils/colorProcessing';

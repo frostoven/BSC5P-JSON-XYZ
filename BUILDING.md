@@ -6,7 +6,7 @@ script creates all the catalog files from scratch each time it's run. It
 utilises additional scripts in `./utils`.
 
 ### Preparation
-Ensure you have Node.js 14 or greater installed, and the latest version of npm.
+Ensure you have Node.js 16 or greater installed, and the latest version of npm.
 
 The scripts provided require that you download
 [BSC5P-JSON's bsc5p_min.json](https://github.com/frostoven/BSC5P-JSON/blob/primary/bsc5p_min.json)

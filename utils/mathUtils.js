@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import BLACKBODY from '../catalogs/blackbody.json';
+import BLACKBODY from '../catalogs/blackbody.json' assert { type: "json" };;
 
 // L₀, or zero point luminosity.
 const BASE_LUMINOSITY = Decimal('3.0128e28');
