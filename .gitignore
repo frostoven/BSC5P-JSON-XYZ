@@ -12,3 +12,6 @@ check_broken_cache.sh
 
 # Node cache
 node_modules
+
+# pnpm
+pnpm-lock.yaml
