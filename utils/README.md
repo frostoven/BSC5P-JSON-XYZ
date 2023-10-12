@@ -8,7 +8,7 @@ enough when put through simulation; here's Orion and Canis Major as produced
 by the [Cosmosis game project](https://github.com/frostoven/Cosmosis), using
 data from this repo:
 
-![Orion and Canis Major](orion_and_canis_major.jpg)
+![Orion and Canis Major](https://raw.githubusercontent.com/frostoven/BSC5P-JSON-XYZ/primary/utils/orion_and_canis_major.jpg)
 
 Note that this project is a subproject of the 
 [BSC5P-JSON-XYZ](https://github.com/frostoven/BSC5P-JSON-XYZ)
@@ -205,7 +205,7 @@ const { r, g, b } = kelvinToRGB(starTemperature, blackbodyLookup);
 
 Color of the Sun, using the above:
 
-![#ffddcf](./color_example.png)
+![#ffddcf](https://raw.githubusercontent.com/frostoven/BSC5P-JSON-XYZ/primary/utils/color_example.png)
 
 <!--<div style="background-color: rgb(255, 221.085, 207.315);">&nbsp;r: 1 | g: 0.867 | b: 0.813</div>-->
 
