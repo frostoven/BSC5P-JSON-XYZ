@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js';
-import BLACKBODY from '../catalogs/blackbody.json' assert { type: "json" };;
 
 // L₀, or zero point luminosity.
 const BASE_LUMINOSITY = Decimal('3.0128e28');
@@ -106,8 +105,9 @@ function convertCoordsToRadians({ rightAscension, declination }) {
  * to that range. Note that, due to the values being normalised, intensity is
  * discarded.
  * @param {number} kelvin
+ * @param {object} blackbodyLookup
  */
-function kelvinToRGB(kelvin) {
+function kelvinToRGB(kelvin, blackbodyLookup) {
   // Thanks to these amazing links, we can approximate blackbody colours from
   // temperature:
   // http://www.fourmilab.ch/documents/specrend/
@@ -118,7 +118,7 @@ function kelvinToRGB(kelvin) {
   if (kelvin > 100000) {
     kelvin = 100000;
   }
-  const blackbody = BLACKBODY[Math.round(kelvin)];
+  const blackbody = blackbodyLookup[Math.round(kelvin)];
   delete blackbody.x;
   delete blackbody.y;
   delete blackbody.z;

@@ -1,3 +1,4 @@
+import BLACKBODY from '../catalogs/blackbody.json' assert { type: "json" };
 import { hsl } from 'd3-color';
 import { hsv } from 'd3-hsv';
 import { piecewise, interpolateHsl, interpolateRgb } from 'd3-interpolate';
@@ -219,7 +220,7 @@ function getStarColor(specClass, specSubclass, starName) {
 
   const temperature = estimateTemperatureInKelvin(percentage);
   // console.log(`=> [${starName}]`, { specClass, classPerc }, '+', { specSubclass, subClassPerc }, {temperature} ,'\n');
-  const blackbodyColor = kelvinToRGB(temperature);
+  const blackbodyColor = kelvinToRGB(temperature, BLACKBODY);
   // TODO: implement mechanism to correctly handle Wolf-Rayet, S-type, and other special
   //  kinds of stars.
 
