@@ -1,4 +1,4 @@
-## Bright Star Catalogue in JSON format, optimised for games and visualisation software
+## Bright Star Catalo in JSON format, optimised for games and visualisation software
 
 This catalog offers star positions both as `x,y,z` coordinates for
 **3D software**, and right ascension / declination for **2D software**. It
@@ -19,9 +19,13 @@ The scripts used to create all JSON files are included in this repo in case
 anyone needs the data adjusted (see 'Scripts provided' section below).
 
 The [Cosmosis game project](https://github.com/frostoven/Cosmosis) has
-successfully used this catalog to generate the following visualisation:
+successfully used this catalog to generate the following visualisations:
 <div align="center">
   <img src="demo.gif">
+</div>
+
+<div align="center">
+  <img src="utils/orion_and_canis_major.jpg">
 </div>
 
 ### Caveats and limitations
@@ -66,7 +70,7 @@ Note that each entry in each file has an ID number (except for
 `blackbody.json`). These IDs are used to identify the same stars across files.
 
 **Files provided:**
-* `bsc5p_radec`: Bright Star Catalogue 5th edition data. Star positions given 
+* `bsc5p_radec`: Bright Star Catalog 5th edition data. Star positions given 
   in right ascension / declination.
 * `bsc5p_3d`: Same data as `bsc5p_radec`, but star locations are expressed as
   `x,y,z` coordinates instead. The center of the universe (coordinates `0,0,0`)
@@ -183,6 +187,27 @@ both `sdBe+gM3+Q0` and `M3IIIe_sh`. The parser will not understand the former
 because the class info is garbled in between spectral peculiarity info. The
 latter however will work just fine (and is what this catalog uses). In any
 case, this script has mechanisms that allow for per-star amendments if needed.
+
+## Disclaimer
+
+These catalogs are provided on a best-effort basis. While we try our best to
+make these catalogs accurate, and spend a considerable amount of reviewing them
+ourselves, these catalogs nonetheless do not follow the academic rigour
+expected from scientific research groups. While we appreciate peer review, to
+our knowledge, no one external to Frostoven has reviewed these catalogs. These
+catalogs are mostly maintained by one (somewhat obsessive) person, though this
+work is based on SIMBAD data that many people maintain.
+
+Something very important to note is that we discard uncertainty because we
+focus on 3D positions. We do this because it simply is NOT helpful when needing
+to definitively place stars at specific positions in video games, which is what
+these catalogs are made for. For example, while it's useful for the academic
+to know that the position of Betelgeuse is known to be -49 to +90 light years
+off despite humanity's best efforts to calculate its distance definitively, it
+simply does not help us place the star in a real position within games.
+
+If you find any serious problems with these catalogs, please feel free to raise
+an issue.
 
 ## Source data
 Excerpt [from original data source](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html):
