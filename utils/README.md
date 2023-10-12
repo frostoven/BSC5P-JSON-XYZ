@@ -207,8 +207,11 @@ const { r, g, b } = kelvinToRGB(starTemperature, blackbodyLookup);
 //  }
 ```
 
-Color of the Sun, using the above converted from 0-1 to 0-255:
-<div style="background-color: rgb(255, 221.085, 207.315);">&nbsp;r: 1 | g: 0.867 | b: 0.813</div>
+Color of the Sun, using the above:
+
+![#ffddcf](./color_example.png)
+
+<!--<div style="background-color: rgb(255, 221.085, 207.315);">&nbsp;r: 1 | g: 0.867 | b: 0.813</div>-->
 
 ### HR diagram estimation
 
