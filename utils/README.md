@@ -15,9 +15,6 @@ within the context of the
 [parent project](https://github.com/frostoven/BSC5P-JSON-XYZ),
 and won't make sense elsewhere;
 such functions are not documented here as they're unlikely to be useful.
-Additionally, other functions (such as calculateLuminosityWatts) aren't
-documented even though they make sense externally, simply because there was no
-opportunity to test their results and ensure they don't have bugs.
 
 ## Installation
 
@@ -281,3 +278,10 @@ const radians = degreesToRadians(90);
 // Result:
 // radians = 1.5707963267948966
 ```
+
+
+<!--
+
+TODO: document calculateLuminosity and calculateLuminosityWatts.
+
+-->
