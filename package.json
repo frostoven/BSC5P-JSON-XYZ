@@ -1,6 +1,6 @@
 {
   "name": "star-catalogs-for-video-games",
-  "version": "1.28.2",
+  "version": "1.28.3",
   "description": "This catalog targets video game developers and visualisation artists that need\r easy-to-use, real star catalogs at their disposal. This catalog contains all\r the stars in the [BSC5P](https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html)\r catalog (all the stars we can see with the naked eye), but with more accurate\r information taken from modern stellar data.  It uses\r [this catalog](https://github.com/aggregate1166877/BSC5P-JSON) as its base but\r adds modern data.",
   "scripts": {
     "buildRaDecJson": "node --experimental-json-modules --experimental-specifier-resolution=node buildRaDecJson.js",
