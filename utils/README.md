@@ -4,8 +4,9 @@
 This library contains functions useful for basic astronomical calculations. I'm
 no mathematician, nor an astrophysicist, so use at your own risk; some of these
 functions may produce invalid values. The values produced *seem* accurate
-though when put through simulation; here's Orion and Canis Major, produced from
-color values that this library generates:
+enough when put through simulation; here's Orion and Canis Major as produced
+by the [Cosmosis game project](https://github.com/frostoven/Cosmosis), using
+data from this repo:
 
 ![Orion and Canis Major](orion_and_canis_major.jpg)
 
