@@ -1,0 +1,23 @@
+{
+  "name": "@frostoven/alkalurops",
+  "version": "1.28.2",
+  "description": "Utils for stellar / astronomical calculations.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:frostoven/BSC5P-JSON-XYZ.git"
+  },
+  "author": "Frostoven",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frostoven/BSC5P-JSON-XYZ/issues"
+  },
+  "homepage": "https://github.com/frostoven/BSC5P-JSON-XYZ#readme",
+  "dependencies": {
+    "d3-color": "3.0.1",
+    "d3-hsv": "0.1.0",
+    "d3-interpolate": "3.0.1",
+    "decimal.js": "10.3.1",
+    "three": "0.133.1"
+  },
+  "type": "module"
+}
