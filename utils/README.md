@@ -10,11 +10,9 @@ data from this repo:
 
 ![Orion and Canis Major](orion_and_canis_major.jpg)
 
-Some of the functions (such as getStarName) are specifically meant to be used
-within the context of the
-[parent project](https://github.com/frostoven/BSC5P-JSON-XYZ),
-and won't make sense elsewhere;
-such functions are not documented here as they're unlikely to be useful.
+Note that this project is a subproject of the 
+[BSC5P-JSON-XYZ](https://github.com/frostoven/BSC5P-JSON-XYZ)
+project, which uses these utils for catalog generation.
 
 ## Installation
 
