@@ -76,7 +76,7 @@ const specialRanges = {
  * finds target number based on a distance from 1% to 100%.
  * @param {array} array - An array containing 2-length arrays. Each 2-length
  *   array is a range from x-y (may be small-big, or big-small).
- * @param {number} percentage - 0 - 100.
+ * @param {number} percentage - 0 to 1, where 0.1 is 100,000 and 1 is 800.
  * @param {number} [scale] - This is the array's length by default. If
  *   specified, shifts the perceived 'end' point.
  * @returns {*}
@@ -94,6 +94,12 @@ function getNumberInNestedRange(array, percentage, scale) {
 }
 
 function estimateTemperatureInKelvin(percentage) {
+  if (percentage <= 0) {
+    percentage = Number.EPSILON;
+  }
+  if (percentage > 1) {
+    percentage = 1;
+  }
   return getNumberInNestedRange(tempRanges, percentage);
 }
 
