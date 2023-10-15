@@ -14,6 +14,10 @@ Note that this project is a subproject of the
 [BSC5P-JSON-XYZ](https://github.com/frostoven/BSC5P-JSON-XYZ)
 project, which uses these utils for catalog generation.
 
+_Special thanks to my friends who, for once, all almost immediately proofread
+this document on request. You bastards never proofread anything else I send you
+:')_
+
 ## Installation
 
 ```bash
@@ -102,6 +106,10 @@ const distanceParsecs = 100;
 
 const absoluteMagnitude = calculateAbsoluteMagnitude(visualMagnitude, distanceParsecs);
 const reverse = calculateVisualMagnitude(absoluteMagnitude, distanceParsecs);
+
+// Result:
+// absoluteMagnitude = 1.5
+// reverse = 6.5
 ```
 
 _Dev note: Be aware that not all magnitudes found online are measured in
@@ -177,7 +185,7 @@ const radians = decToRadians(degrees, minutes, seconds);
 
 Converts temperature in kelvin to RGB. Note that, due to the complexity
 involved in converting kelvin to color, you need to feed it an appropriate
-lookup table with computations pre-backed in. The parent repo has a
+lookup table with computations pre-baked in. The parent repo has a
 [lookup table here](https://github.com/frostoven/BSC5P-JSON-XYZ/blob/primary/catalogs/blackbody.json)
 that you can use (beware that it has gamma corrections pre-applied).
 
@@ -209,6 +217,52 @@ Color of the Sun, using the above:
 
 <!--<div style="background-color: rgb(255, 221.085, 207.315);">&nbsp;r: 1 | g: 0.867 | b: 0.813</div>-->
 
+### Luminosity to watts
+
+`calculateLuminosityWatts(absoluteMagnitude, baseLuminosity='3.0128e28')`
+
+Converts absolute magnitude to luminosity in watts. Note that this function
+uses the
+[decimal.js library](https://www.npmjs.com/package/decimal.js)
+to deal with the very large numbers involved, and returns a string instead of a
+number.
+
+Example:
+```javascript
+import { calculateLuminosityWatts } from '@frostoven/alkalurops/mathUtils';
+
+const sunAbsoluteMagnitude = 4.83;
+const luminosity = calculateLuminosityWatts(sunAbsoluteMagnitude);
+
+// Result:
+// luminosity = '3.5991471419311096454e+26'
+```
+
+_As a side note, this video from Michel van Biezen really helped me understand
+luminosities and is worth a watch if you're still learning:_<br>
+_https://www.youtube.com/watch?v=HVJ7yMgsj3s_
+
+### Luminosity relative to the Sun
+
+`calculateLuminosity(absoluteMagnitude, baseLuminosity='3.0128e28', sunLuminosity='3.828e26')`
+
+Converts absolute magnitude to luminosity relative to the Sun. Note that this
+function uses the
+[decimal.js library](https://www.npmjs.com/package/decimal.js)
+to deal with the very large numbers involved, and returns a string instead of a
+number.
+
+Example:
+```javascript
+import { calculateLuminosity } from '@frostoven/alkalurops/mathUtils';
+
+const sunAbsoluteMagnitude = 4.83;
+const luminosity = calculateLuminosity(sunAbsoluteMagnitude);
+
+// Result:
+// luminosity = '0.9402160767845114'
+```
+
 ### HR diagram estimation
 
 `estimateTemperatureInKelvin(percentage)`
@@ -235,7 +289,7 @@ Have a look at
 [tempRanges](https://github.com/frostoven/BSC5P-JSON-XYZ/blob/primary/utils/hrDiagram.js#L27)
 inside the
 [hrDiagram.js](https://github.com/frostoven/BSC5P-JSON-XYZ/blob/primary/utils/hrDiagram.js)
-file for more info on how this relates to spectral classes, it has a lot a of
+file for more info on how this relates to spectral classes, it has a lot of
 comments describing its setup.
 
 
@@ -276,10 +330,3 @@ const radians = degreesToRadians(90);
 // Result:
 // radians = 1.5707963267948966
 ```
-
-
-<!--
-
-TODO: document calculateLuminosity and calculateLuminosityWatts.
-
--->
