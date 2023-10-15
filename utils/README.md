@@ -63,7 +63,7 @@ certainly appears to work just fine, and is quite performant for datasets under
 `lumToEffectiveTemperature(luminosity)`<br>
 `effectiveTemperatureToLum(temperature)`
 
-Coverts luminosity to
+Converts luminosity to
 [effective temperature](https://en.wikipedia.org/wiki/Effective_temperature)
 and vice-versa. Note that these are approximation functions, and will produce
 invalid results under certain conditions.
