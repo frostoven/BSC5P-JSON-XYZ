@@ -21,11 +21,11 @@ anyone needs the data adjusted (see 'Scripts provided' section below).
 The [Cosmosis game project](https://github.com/frostoven/Cosmosis) has
 successfully used this catalog to generate the following visualisations:
 <div align="center">
-  <img src="demo.gif">
+  <img src="utils/orion_and_canis_major.jpg">
 </div>
 
 <div align="center">
-  <img src="utils/orion_and_canis_major.jpg">
+  <img src="demo.gif">
 </div>
 
 ### Caveats and limitations
