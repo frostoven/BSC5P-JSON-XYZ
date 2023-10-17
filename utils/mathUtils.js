@@ -157,5 +157,6 @@ export {
   degToDecimal,
   raToRadians,
   decToRadians,
+  degreesToRadians,
   kelvinToRGB,
 }
