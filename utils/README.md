@@ -53,6 +53,12 @@ const { x, y, z } = project3d({
 
 ```
 
+Right ascension and declination are in radians. Distance can, technically, be
+any unit you want it to be; parsecs are preferred to avoid rounding errors.
+This library offers `raToRadians()` and `decToRadians()` functions to convert 
+hour / minute / seconds to radians if needed. If you have decimal degree
+values, simply convert them to radians like you would for any decimal value.
+
 _Dev note: project3d() uses direction vectors instead of sin/cos trig because,
 at the time, I didn't know better. I have no idea if this is bad, but it
 certainly appears to work just fine, and is quite performant for datasets under
