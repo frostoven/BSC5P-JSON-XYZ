@@ -96,9 +96,13 @@ TODO: consider doing real buffered loading. As in, fixed line width. This gives
       us both real json and position independent line reading.
 -->
 
-### Script files
+### Build info
 See [the build doc](BUILDING.md) if you're a developer wishing to build the
 catalogs from scratch yourself.
+
+### Script files
+The scripts used to calculate catalog values are
+[available as a library](https://github.com/frostoven/BSC5P-JSON-XYZ/tree/primary/utils#readme).
 
 ### JSON keys
 Because this catalog primarily targets video games, things are keep small for
