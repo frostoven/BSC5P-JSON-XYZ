@@ -1,4 +1,4 @@
-## Bright Star Catalo in JSON format, optimised for games and visualisation software
+## Bright Star Catalog in JSON format, optimised for games and visualisation software
 
 This catalog offers star positions both as `x,y,z` coordinates for
 **3D software**, and right ascension / declination for **2D software**. It
